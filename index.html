@@ -193,69 +193,69 @@
         </div>
 
         <div class="header">
-            <p>Time: <span class="highlight">24D 5H</span></p>
+            <p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span></p>
         </div>
 
         <div class="status">
-            <div>Charge: <span class="highlight">ON</span></div>
-            <div>Discharge: <span class="highlight">ON</span></div>
-            <div>Balance: <span class="highlight">ON</span></div>
+            <div>Charge: <span data-sensor="charging" class="highlight">OFF</span></div>
+            <div>Discharge: <span data-sensor="discharging" class="highlight">OFF</span></div>
+            <div>Balance: <span data-sensor="balancing" class="highlight">OFF</span></div>
         </div>
 
         <div class="main-stats">
             <div class="box">
                 <center>
-                    <h1><span class="highlight">25.79 V</span></h1>
-                    <p>Power Draw: <span class="highlight">-108 W</span></p>
-                    <p>Total Capacity: <span class="highlight">145 Ah</span></p>
-                    <p>Cycle Capacity: <span class="highlight">269.791 Ah</span></p>
-                    <p>Avg Cell V: <span class="highlight">3.223 V</span></p>
-                    <p>Balance Curr: <span class="highlight">0.00 A</span></p>
-                    <p>Battery T1: <span class="highlight">18.9 °C</span></p>
+                    <h1><span data-sensor="total_voltage" class="highlight">0.00 V</span></h1>
+                    <p>Power Draw: <span data-sensor="power" class="highlight">0 W</span></p>
+                    <p>Total Capacity: <span data-sensor="total_battery_capacity_setting" class="highlight">0 Ah</span></p>
+                    <p>Cycle Capacity: <span data-sensor="total_charging_cycle_capacity" class="highlight">0 Ah</span></p>
+                    <p>Avg Cell V: <span data-sensor="average_cell_voltage" class="highlight">0.000 V</span></p>
+                    <p>Balance Curr: <span data-sensor="current" class="highlight">0.00 A</span></p>
+                    <p>Battery T1: <span data-sensor="temperature_sensor_1" class="highlight">0.0 °C</span></p>
                 </center>
             </div>
             <div class="box">
                 <center>
-                    <h1><span class="highlight">4.20 A</span></h1>
-                    <p>Remaining: <span class="highlight">12%</span></p>
-                    <p>Rem. Capacity: <span class="highlight">17.240 Ah</span></p>
-                    <p>Cycle Count: <span class="highlight">1</span></p>
-                    <p>Delta Cell V: <span class="highlight">0.007 V</span></p>
-                    <p>MOS Temp.: <span class="highlight">20.0 °C</span></p>
-                    <p>Battery T2: <span class="highlight">19.2 °C</span></p>
+                    <h1><span data-sensor="current" class="highlight">0.00 A</span></h1>
+                    <p>Remaining: <span data-sensor="capacity_remaining" class="highlight">0%</span></p>
+                    <p>Rem. Capacity: <span data-sensor="capacity_remaining_derived" class="highlight">0.000 Ah</span></p>
+                    <p>Cycle Count: <span data-sensor="charging_cycles" class="highlight">0</span></p>
+                    <p>Delta Cell V: <span data-sensor="delta_cell_voltage" class="highlight">0.000 V</span></p>
+                    <p>MOS Temp.: <span data-sensor="power_tube_temperature" class="highlight">0.0 °C</span></p>
+                    <p>Battery T2: <span data-sensor="temperature_sensor_2" class="highlight">0.0 °C</span></p>
                 </center>
             </div>
         </div>
 
         <div class="cells">
-            <div class="cell">01. <span>3.228 V</span> / 57.0 mΩ</div>
-            <div class="cell">02. <span>3.222 V</span> / 58.0 mΩ</div>
-            <div class="cell">03. <span>3.223 V</span> / 56.0 mΩ</div>
-            <div class="cell">04. <span>3.222 V</span> / 55.0 mΩ</div>
-            <div class="cell">05. <span>3.222 V</span> / 55.0 mΩ</div>
-            <div class="cell">06. <span>3.221 V</span> / 55.0 mΩ</div>
-            <div class="cell">07. <span>3.223 V</span> / 55.0 mΩ</div>
-            <div class="cell">08. <span>3.222 V</span> / 56.0 mΩ</div>
+            <div class="cell">01. <span data-sensor="cell_voltage_1">0.000 V</span> / <span data-sensor="cell_resistance_1">0.0 mΩ</span></div>
+            <div class="cell">02. <span data-sensor="cell_voltage_2">0.000 V</span> / <span data-sensor="cell_resistance_2">0.0 mΩ</span></div>
+            <div class="cell">03. <span data-sensor="cell_voltage_3">0.000 V</span> / <span data-sensor="cell_resistance_3">0.0 mΩ</span></div>
+            <div class="cell">04. <span data-sensor="cell_voltage_4">0.000 V</span> / <span data-sensor="cell_resistance_4">0.0 mΩ</span></div>
+            <div class="cell">05. <span data-sensor="cell_voltage_5">0.000 V</span> / <span data-sensor="cell_resistance_5">0.0 mΩ</span></div>
+            <div class="cell">06. <span data-sensor="cell_voltage_6">0.000 V</span> / <span data-sensor="cell_resistance_6">0.0 mΩ</span></div>
+            <div class="cell">07. <span data-sensor="cell_voltage_7">0.000 V</span> / <span data-sensor="cell_resistance_7">0.0 mΩ</span></div>
+            <div class="cell">08. <span data-sensor="cell_voltage_8">0.000 V</span> / <span data-sensor="cell_resistance_8">0.0 mΩ</span></div>
         </div>
 
         <div class="controls">
             <div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" data-switch="charging">
                     <span class="slider"></span>
                 </label>
                 <div class="control-label">Charging</div>
             </div>
             <div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" data-switch="discharging">
                     <span class="slider"></span>
                 </label>
                 <div class="control-label">Discharging</div>
             </div>
             <div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" data-switch="balancing">
                     <span class="slider"></span>
                 </label>
                 <div class="control-label">Balancing</div>
@@ -264,8 +264,41 @@
     </div>
 
     <script>
+        const updateInterval = 5000;
+
+        function updateData() {
+            fetch('http://martyello.duckdns.org/api/states')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-sensor]').forEach(element => {
+                        const sensorId = element.getAttribute('data-sensor');
+                        if (data[sensorId]) {
+                            element.textContent = data[sensorId].state;
+                        }
+                    });
+
+                    document.querySelectorAll('[data-switch]').forEach(element => {
+                        const switchId = element.getAttribute('data-switch');
+                        if (data[switchId]) {
+                            element.checked = data[switchId].state;
+                        }
+                    });
+
+                    updateCellColors();
+                });
+        }
+
+        document.querySelectorAll('[data-switch]').forEach(element => {
+            element.addEventListener('change', function() {
+                const switchId = this.getAttribute('data-switch');
+                fetch(`/api/switch/${switchId}/toggle`, {
+                    method: 'POST'
+                });
+            });
+        });
+
         function updateCellColors() {
-            const cells = document.querySelectorAll('.cell span');
+            const cells = document.querySelectorAll('.cell span[data-sensor^="cell_voltage_"]');
             let voltages = [];
             
             cells.forEach(cell => {
@@ -286,8 +319,8 @@
             voltages[voltages.length - 1].element.className = 'highest';
         }
 
-        updateCellColors();
+        setInterval(updateData, updateInterval);
+        updateData();
     </script>
 </body>
 </html>
-
