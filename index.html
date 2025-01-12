@@ -12,8 +12,6 @@
             margin-top: 30px;
             padding: 10px 0;
             margin-bottom: 30px;
-            background-color: #333;
-            border-radius: 5px;
         }
 
         .title h1 {
@@ -35,12 +33,10 @@
         }
 
         .dashboard {
-            width: 180%;
+            width: 100%;
             max-width: 600px;
-            background-color: #222;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 10);
         }
 
         .header {
@@ -61,7 +57,9 @@
 
         .status {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 15px auto;
             margin-bottom: 5px;
         }
 
@@ -179,6 +177,68 @@
         .lowest {
         color: #ff0000;  /* Vermelho para menor voltagem */
         }
+     
+        @media screen and (max-width: 768px) {
+    .dashboard {
+        width: 95%;
+        padding: 5px;
+    }
+
+    .main-stats {
+        flex-direction: column;
+    }
+
+    .main-stats .box {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .status div {
+        padding: 5px 10px;
+        font-size: 0.9em;
+    }
+
+    .cells {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3px;
+    }
+
+    .cell {
+        font-size: 0.9em;
+        padding: 5px;
+    }
+
+    .controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .switch {
+        width: 50px;
+        height: 28px;
+    }
+
+    .slider:before {
+        height: 22px;
+        width: 22px;
+    }
+    }
+
+    @media screen and (max-width: 480px) {
+    .title h1 {
+        font-size: 20px;
+    }
+
+    .status {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .status div {
+        width: 100%;
+    }
+    }
    
             </style>
 </head>
