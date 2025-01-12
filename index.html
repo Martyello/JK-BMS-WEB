@@ -267,7 +267,7 @@
         const updateInterval = 5000;
 
         function updateData() {
-            fetch('http://martyello.duckdns.org/api/states')
+            fetch('http://martyello.duckdns.org:9595/api/states')
                 .then(response => response.json())
                 .then(data => {
                     document.querySelectorAll('[data-sensor]').forEach(element => {
