@@ -7,135 +7,134 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #181818;
+            background-color: #000;
             color: #fff;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
 
         .dashboard {
-            width: 90%;
-            max-width: 800px;
-            background-color: #222;
-            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        .status {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+            background: #111;
+            padding: 10px 20px;
+            border-radius: 10px;
         }
 
-        .status div {
+        .header div {
             text-align: center;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
         }
 
-        .main-stats {
+        .main {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px 0;
         }
 
-        .main-stats .box {
+        .main .section {
             width: 48%;
-            background-color: #333;
-            border-radius: 5px;
-            padding: 10px;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
         }
 
-        .box h2 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+        .main .section h3 {
+            margin-top: 0;
         }
 
         .cells {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
             margin-bottom: 20px;
         }
 
+        .cell-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
         .cell {
-            width: 48%;
-            background-color: #333;
-            border-radius: 5px;
-            padding: 10px;
+            flex: 1;
+            text-align: center;
+            padding: 5px;
+            border-right: 1px solid #444;
+        }
+
+        .cell:last-child {
+            border-right: none;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .footer div {
             text-align: center;
         }
 
-        .controls {
-            display: flex;
-            justify-content: space-around;
+        .footer div span {
+            display: block;
+            margin-top: 10px;
         }
 
-        .controls button {
-            padding: 10px 20px;
-            background-color: #333;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
+        .toggle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #00f;
+            margin: 0 auto;
         }
 
-        .controls button.active {
-            background-color: #007bff;
+        .red {
+            color: red;
         }
-
-        .highlight {
-            color: #00ff00;
-        }
-
-        .warning {
-            color: #ff0000;
-        }
-
     </style>
 </head>
 <body>
     <div class="dashboard">
+        <!-- Header -->
         <div class="header">
-            <h1>Battery Dashboard</h1>
-            <p>Time: <span class="highlight">24D 5H</span></p>
+            <div>Time: <strong>24D 5H</strong></div>
+            <div>Charge: <strong>ON</strong></div>
+            <div>Discharge: <strong>ON</strong></div>
+            <div>Balance: <strong>ON</strong></div>
         </div>
 
-        <div class="status">
-            <div>Charge: <span class="highlight">ON</span></div>
-            <div>Discharge: <span class="highlight">ON</span></div>
-            <div>Balance: <span class="highlight">ON</span></div>
-        </div>
-
-        <div class="main-stats">
-            <div class="box">
-                <h2>25.79 V</h2>
-                <p>Power Draw: <span class="highlight">-108 W</span></p>
+        <!-- Main Info -->
+        <div class="main">
+            <div class="section">
+                <h3>25.79 V</h3>
+                <p>Power Draw: -108 W</p>
                 <p>Total Capacity: 145 Ah</p>
                 <p>Cycle Capacity: 269.791 Ah</p>
                 <p>Avg Cell V: 3.223 V</p>
-                <p>Balance Curr: 0.00 A</p>
+                <p>Balance Curr.: 0.00 A</p>
                 <p>Battery T1: 18.9 °C</p>
             </div>
-            <div class="box">
-                <h2>-4.20 A</h2>
-                <p>Remaining: <span class="highlight">12%</span></p>
+            <div class="section">
+                <h3>-4.20 A</h3>
+                <p>Remaining: 12%</p>
                 <p>Rem. Capacity: 17.240 Ah</p>
                 <p>Cycle Count: 1</p>
                 <p>Delta Cell V: 0.007 V</p>
@@ -144,23 +143,37 @@
             </div>
         </div>
 
+        <!-- Cells -->
         <div class="cells">
-            <div class="cell">01. <span class="highlight">3.228 V</span> / 57.0 mΩ</div>
-            <div class="cell">02. <span class="highlight">3.222 V</span> / 58.0 mΩ</div>
-            <div class="cell">03. <span class="highlight">3.223 V</span> / 56.0 mΩ</div>
-            <div class="cell">04. <span class="highlight">3.222 V</span> / 55.0 mΩ</div>
-            <div class="cell">05. <span class="warning">3.222 V</span> / 55.0 mΩ</div>
-            <div class="cell">06. <span class="highlight">3.221 V</span> / 55.0 mΩ</div>
-            <div class="cell">07. <span class="highlight">3.223 V</span> / 55.0 mΩ</div>
-            <div class="cell">08. <span class="highlight">3.222 V</span> / 56.0 mΩ</div>
+            <div class="cell-row">
+                <div class="cell">01. <strong>3.228 V</strong> / 57.0 mΩ</div>
+                <div class="cell">02. <strong>3.222 V</strong> / 58.0 mΩ</div>
+                <div class="cell">03. <strong>3.223 V</strong> / 56.0 mΩ</div>
+                <div class="cell">04. <strong>3.222 V</strong> / 55.0 mΩ</div>
+            </div>
+            <div class="cell-row">
+                <div class="cell">05. <strong class="red">3.222 V</strong> / 55.0 mΩ</div>
+                <div class="cell">06. <strong>3.221 V</strong> / 55.0 mΩ</div>
+                <div class="cell">07. <strong>3.223 V</strong> / 55.0 mΩ</div>
+                <div class="cell">08. <strong>3.222 V</strong> / 56.0 mΩ</div>
+            </div>
         </div>
 
-        <div class="controls">
-            <button class="active">Charging</button>
-            <button class="active">Discharging</button>
-            <button class="active">Balancing</button>
+        <!-- Footer -->
+        <div class="footer">
+            <div>
+                <div class="toggle"></div>
+                <span>Charging</span>
+            </div>
+            <div>
+                <div class="toggle"></div>
+                <span>Discharging</span>
+            </div>
+            <div>
+                <div class="toggle"></div>
+                <span>Balancing</span>
+            </div>
         </div>
     </div>
 </body>
 </html>
-
