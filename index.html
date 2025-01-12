@@ -7,134 +7,174 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #000;
+            background-color: #181818;
             color: #fff;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .dashboard {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width: 90%;
+            max-width: 800px;
+            background-color: #222;
+            border-radius: 10px;
             padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 800px;
-            background: #111;
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-
-        .header div {
             text-align: center;
-        }
-
-        .main {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 800px;
-            margin: 20px 0;
-        }
-
-        .main .section {
-            width: 48%;
-            background: #111;
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .main .section h3 {
-            margin-top: 0;
-        }
-
-        .cells {
-            width: 100%;
-            max-width: 800px;
-            background: #111;
-            padding: 15px;
-            border-radius: 10px;
             margin-bottom: 20px;
         }
 
-        .cell-row {
+        .header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .status {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        .status div {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+        }
+
+        .main-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .main-stats .box {
+            width: 48%;
+            background-color: #333;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .box h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .cells {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .cell {
-            flex: 1;
+            width: 48%;
+            background-color: #333;
+            border-radius: 5px;
+            padding: 10px;
             text-align: center;
-            padding: 5px;
-            border-right: 1px solid #444;
         }
 
-        .cell:last-child {
-            border-right: none;
+        .highlight {
+            color: #00ff00;
         }
 
-        .footer {
+        .warning {
+            color: #ff0000;
+        }
+
+        /* Estilos do Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .controls {
             display: flex;
             justify-content: space-around;
-            width: 100%;
-            max-width: 800px;
-            background: #111;
-            padding: 15px;
-            border-radius: 10px;
+            align-items: center;
         }
 
-        .footer div {
-            text-align: center;
-        }
-
-        .footer div span {
-            display: block;
+        .control-label {
+            color: #fff;
             margin-top: 10px;
-        }
-
-        .toggle {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: #00f;
-            margin: 0 auto;
-        }
-
-        .red {
-            color: red;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="dashboard">
-        <!-- Header -->
         <div class="header">
-            <div>Time: <strong>24D 5H</strong></div>
-            <div>Charge: <strong>ON</strong></div>
-            <div>Discharge: <strong>ON</strong></div>
-            <div>Balance: <strong>ON</strong></div>
+            <h1>Battery Dashboard</h1>
+            <p>Time: <span class="highlight">24D 5H</span></p>
         </div>
 
-        <!-- Main Info -->
-        <div class="main">
-            <div class="section">
-                <h3>25.79 V</h3>
-                <p>Power Draw: -108 W</p>
+        <div class="status">
+            <div>Charge: <span class="highlight">ON</span></div>
+            <div>Discharge: <span class="highlight">ON</span></div>
+            <div>Balance: <span class="highlight">ON</span></div>
+        </div>
+
+        <div class="main-stats">
+            <div class="box">
+                <h2>25.79 V</h2>
+                <p>Power Draw: <span class="highlight">-108 W</span></p>
                 <p>Total Capacity: 145 Ah</p>
                 <p>Cycle Capacity: 269.791 Ah</p>
                 <p>Avg Cell V: 3.223 V</p>
-                <p>Balance Curr.: 0.00 A</p>
+                <p>Balance Curr: 0.00 A</p>
                 <p>Battery T1: 18.9 °C</p>
             </div>
-            <div class="section">
-                <h3>-4.20 A</h3>
-                <p>Remaining: 12%</p>
+            <div class="box">
+                <h2>-4.20 A</h2>
+                <p>Remaining: <span class="highlight">12%</span></p>
                 <p>Rem. Capacity: 17.240 Ah</p>
                 <p>Cycle Count: 1</p>
                 <p>Delta Cell V: 0.007 V</p>
@@ -143,35 +183,38 @@
             </div>
         </div>
 
-        <!-- Cells -->
         <div class="cells">
-            <div class="cell-row">
-                <div class="cell">01. <strong>3.228 V</strong> / 57.0 mΩ</div>
-                <div class="cell">02. <strong>3.222 V</strong> / 58.0 mΩ</div>
-                <div class="cell">03. <strong>3.223 V</strong> / 56.0 mΩ</div>
-                <div class="cell">04. <strong>3.222 V</strong> / 55.0 mΩ</div>
-            </div>
-            <div class="cell-row">
-                <div class="cell">05. <strong class="red">3.222 V</strong> / 55.0 mΩ</div>
-                <div class="cell">06. <strong>3.221 V</strong> / 55.0 mΩ</div>
-                <div class="cell">07. <strong>3.223 V</strong> / 55.0 mΩ</div>
-                <div class="cell">08. <strong>3.222 V</strong> / 56.0 mΩ</div>
-            </div>
+            <div class="cell">01. <span class="highlight">3.228 V</span> / 57.0 mΩ</div>
+            <div class="cell">02. <span class="highlight">3.222 V</span> / 58.0 mΩ</div>
+            <div class="cell">03. <span class="highlight">3.223 V</span> / 56.0 mΩ</div>
+            <div class="cell">04. <span class="highlight">3.222 V</span> / 55.0 mΩ</div>
+            <div class="cell">05. <span class="warning">3.222 V</span> / 55.0 mΩ</div>
+            <div class="cell">06. <span class="highlight">3.221 V</span> / 55.0 mΩ</div>
+            <div class="cell">07. <span class="highlight">3.223 V</span> / 55.0 mΩ</div>
+            <div class="cell">08. <span class="highlight">3.222 V</span> / 56.0 mΩ</div>
         </div>
 
-        <!-- Footer -->
-        <div class="footer">
+        <div class="controls">
             <div>
-                <div class="toggle"></div>
-                <span>Charging</span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+                <div class="control-label">Charging</div>
             </div>
             <div>
-                <div class="toggle"></div>
-                <span>Discharging</span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+                <div class="control-label">Discharging</div>
             </div>
             <div>
-                <div class="toggle"></div>
-                <span>Balancing</span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+                <div class="control-label">Balancing</div>
             </div>
         </div>
     </div>
