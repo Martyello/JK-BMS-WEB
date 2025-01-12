@@ -68,19 +68,19 @@
         }
 
         .cells {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+           display: grid;
+           grid-template-columns: repeat(2, 1fr);
+           gap: 10px;
+           margin-bottom: 20px;
         }
 
         .cell {
-            width: 48%;
-            background-color: #333;
-            border-radius: 5px;
-            padding: 10px;
-            text-align: center;
+           background-color: #333;
+           border-radius: 5px;
+           padding: 10px;
+           text-align: center;
         }
+
 
         .highlight {
             color: #00ff00;
