@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Battery Dashboard</title>
+    <title>JKBMS WEb ESP8266</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,16 +19,16 @@
 
         .dashboard {
             width: 90%;
-            max-width: 800px;
+            max-width: 600px;
             background-color: #222;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .header h1 {
@@ -39,12 +39,12 @@
         .status {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .status div {
             text-align: center;
-            padding: 10px;
+            padding: 5px;
             background-color: #333;
             border-radius: 5px;
         }
@@ -52,26 +52,26 @@
         .main-stats {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .main-stats .box {
             width: 48%;
             background-color: #333;
             border-radius: 5px;
-            padding: 10px;
+            padding: 5px;
         }
 
         .box h2 {
             font-size: 1.2rem;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .cells {
            display: grid;
            grid-template-columns: repeat(2, 1fr);
-           gap: 10px;
-           margin-bottom: 20px;
+           gap: 5px;
+           margin-bottom: 5px;
         }
 
         .cell {
@@ -147,12 +147,21 @@
             margin-top: 10px;
             text-align: center;
         }
-    </style>
+        
+        .highest {
+        color: #0088ff;  /* Azul para maior voltagem */
+        }
+
+        .lowest {
+        color: #ff0000;  /* Vermelho para menor voltagem */
+        }
+   
+            </style>
 </head>
 <body>
     <div class="dashboard">
         <div class="header">
-            <h1>Battery Dashboard</h1>
+            <h1>JKBMS WEB ESP8266</h1>
             <p>Time: <span class="highlight">24D 5H</span></p>
         </div>
 
@@ -164,35 +173,36 @@
 
         <div class="main-stats">
             <div class="box">
-                <h2>25.79 V</h2>
+                <center><h1><span class="highlight">25.79 V</span></h1>
                 <p>Power Draw: <span class="highlight">-108 W</span></p>
-                <p>Total Capacity: 145 Ah</p>
-                <p>Cycle Capacity: 269.791 Ah</p>
-                <p>Avg Cell V: 3.223 V</p>
-                <p>Balance Curr: 0.00 A</p>
-                <p>Battery T1: 18.9 °C</p>
+                <p>Total Capacity: <span class="highlight">145 Ah</spam></p>
+                <p>Cycle Capacity: <span class="highlight">269.791 Ah</spam></p>
+                <p>Avg Cell V: <span class="highlight">3.223 V</spam></p>
+                <p>Balance Curr: <span class="highlight">0.00 A</spam></p>
+                <p>Battery T1: <span class="highlight">18.9 °C</spam></p></center>
             </div>
             <div class="box">
-                <h2>-4.20 A</h2>
+                <center><h1><span class="highlight">4.20 A</span></h1>
                 <p>Remaining: <span class="highlight">12%</span></p>
-                <p>Rem. Capacity: 17.240 Ah</p>
-                <p>Cycle Count: 1</p>
-                <p>Delta Cell V: 0.007 V</p>
-                <p>MOS Temp.: 20.0 °C</p>
-                <p>Battery T2: 19.2 °C</p>
+                <p>Rem. Capacity: <span class="highlight">17.240 Ah</spam></p>
+                <p>Cycle Count: <span class="highlight">1</spam></p>
+                <p>Delta Cell V: <span class="highlight">0.007 V</spam></p>
+                <p>MOS Temp.: <span class="highlight">20.0 °C</spam></p>
+                <p>Battery T2: <span class="highlight">19.2 °C</spam></p></center>
             </div>
         </div>
 
         <div class="cells">
-            <div class="cell">01. <span class="highlight">3.228 V</span> / 57.0 mΩ</div>
-            <div class="cell">02. <span class="highlight">3.222 V</span> / 58.0 mΩ</div>
-            <div class="cell">03. <span class="highlight">3.223 V</span> / 56.0 mΩ</div>
-            <div class="cell">04. <span class="highlight">3.222 V</span> / 55.0 mΩ</div>
-            <div class="cell">05. <span class="warning">3.222 V</span> / 55.0 mΩ</div>
-            <div class="cell">06. <span class="highlight">3.221 V</span> / 55.0 mΩ</div>
-            <div class="cell">07. <span class="highlight">3.223 V</span> / 55.0 mΩ</div>
-            <div class="cell">08. <span class="highlight">3.222 V</span> / 56.0 mΩ</div>
-        </div>
+            <div class="cell">01. <span>3.228 V</span> / 57.0 mΩ</div>
+            <div class="cell">02. <span>3.222 V</span> / 58.0 mΩ</div>
+            <div class="cell">03. <span>3.223 V</span> / 56.0 mΩ</div>
+            <div class="cell">04. <span>3.222 V</span> / 55.0 mΩ</div>
+            <div class="cell">05. <span>3.222 V</span> / 55.0 mΩ</div>
+            <div class="cell">06. <span>3.221 V</span> / 55.0 mΩ</div>
+            <div class="cell">07. <span>3.223 V</span> / 55.0 mΩ</div>
+            <div class="cell">08. <span>3.222 V</span> / 56.0 mΩ</div>
+      </div>
+
 
         <div class="controls">
             <div>
@@ -218,5 +228,31 @@
             </div>
         </div>
     </div>
+<script>
+    function updateCellColors() {
+        const cells = document.querySelectorAll('.cell span');
+        let voltages = [];
+        
+        cells.forEach(cell => {
+            const voltage = parseFloat(cell.textContent);
+            voltages.push({
+                element: cell,
+                voltage: voltage
+            });
+        });
+
+        voltages.sort((a, b) => a.voltage - b.voltage);
+
+        cells.forEach(cell => {
+            cell.className = 'highlight';
+        });
+
+        voltages[0].element.className = 'lowest';
+        voltages[voltages.length - 1].element.className = 'highest';
+    }
+
+    updateCellColors();
+</script>
+
 </body>
 </html>
