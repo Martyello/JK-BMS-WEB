@@ -1,82 +1,165 @@
-<div id="webcrumbs"> 
-            	<div className="w-[600px] bg-black rounded-lg shadow-lg text-neutral-50 p-4">  <div className="flex justify-between items-center border-b border-neutral-800 pb-2">
-	    <p>Time: <span className="text-primary-500">24D 5H</span></p>
-	    <div className="flex gap-4">
-	      <p>Charge: <span className="text-green-500">ON</span></p>
-	      <p>Discharge: <span className="text-green-500">ON</span></p>
-	      <p>Balance: <span className="text-green-500">ON</span></p>
-	    </div>
-	  </div>
-	
-	  <div className="flex justify-between items-start gap-2 py-4">
-	    <div className="flex-1 bg-neutral-950 rounded-md p-4">
-	      <h3 className="text-green-500 text-2xl font-title">25.79 V</h3>
-	      <p>Power Draw: <span className="text-neutral-500">-108 W</span></p>
-	      <p>Total Capacity: <span className="text-neutral-500">145 Ah</span></p>
-	      <p>Cycle Capacity: <span className="text-neutral-500">269.791 Ah</span></p>
-	      <p>Avg Cell V: <span className="text-neutral-500">3.223 V</span></p>
-	      <p>Balance Curr: <span className="text-neutral-500">0.00 A</span></p>
-	      <p>Battery T1: <span className="text-neutral-500">18.9 °C</span></p>
-	    </div>
-	    <div className="flex-1 bg-neutral-950 rounded-md p-4">
-	      <h3 className="text-green-500 text-2xl font-title">-4.20 A</h3>
-	      <p>Remaining: <span className="text-neutral-500">12 %</span></p>
-	      <p>Rem. Capacity: <span className="text-neutral-500">17.240 Ah</span></p>
-	      <p>Cycle Count: <span className="text-neutral-500">1</span></p>
-	      <p>Delta Cell V: <span className="text-neutral-500">0.007 V</span></p>
-	      <p>MOS Temp.: <span className="text-neutral-500">20.0 °C</span></p>
-	      <p>Battery T2: <span className="text-neutral-500">19.2 °C</span></p>
-	    </div>
-	  </div>
-	
-	  <div className="py-4">
-	    <h3 className="text-neutral-500 pb-2">Cells</h3>
-	    <div className="flex gap-2">
-	      <div className="flex-1 bg-neutral-950 rounded-md p-4">
-	        <p>01. <span className="text-blue-500">3.228 V</span> / 57.0 mΩ</p>
-	        <p>02. <span className="text-neutral-500">3.222 V</span> / 58.0 mΩ</p>
-	        <p>03. <span className="text-neutral-500">3.223 V</span> / 56.0 mΩ</p>
-	        <p>04. <span className="text-neutral-500">3.222 V</span> / 55.0 mΩ</p>
-	      </div>
-	      <div className="flex-1 bg-neutral-950 rounded-md p-4">
-	        <p>05. <span className="text-red-500">3.222 V</span> / 55.0 mΩ</p>
-	        <p>06. <span className="text-neutral-500">3.221 V</span> / 55.0 mΩ</p>
-	        <p>07. <span className="text-neutral-500">3.223 V</span> / 55.0 mΩ</p>
-	        <p>08. <span className="text-neutral-500">3.222 V</span> / 56.0 mΩ</p>
-	      </div>
-	    </div>
-	  </div>
-	
-	  <div className="py-4">
-	    <div className="bg-neutral-950 rounded-md p-4 flex flex-col gap-2">
-	      <div className="flex items-center justify-between">
-	        <div className="flex items-center gap-2">
-	          <span className="material-symbols-outlined text-primary-500">battery_charging_full</span>
-	          <p>Charging</p>
-	        </div>
-	        <div className="relative w-[40px] h-[20px] bg-primary-500 rounded-full">
-	          <div className="bg-primary-50 w-[16px] h-[16px] rounded-full absolute top-1 left-[22px]"></div>
-	        </div>
-	      </div>
-	      <div className="flex items-center justify-between">
-	        <div className="flex items-center gap-2">
-	          <span className="material-symbols-outlined text-primary-500">bolt</span>
-	          <p>Discharging</p>
-	        </div>
-	        <div className="relative w-[40px] h-[20px] bg-primary-500 rounded-full">
-	          <div className="bg-primary-50 w-[16px] h-[16px] rounded-full absolute top-1 left-[22px]"></div>
-	        </div>
-	      </div>
-	      <div className="flex items-center justify-between">
-	        <div className="flex items-center gap-2">
-	          <span className="material-symbols-outlined text-primary-500">electrical_services</span>
-	          <p>Balancing</p>
-	        </div>
-	        <div className="relative w-[40px] h-[20px] bg-primary-500 rounded-full">
-	          <div className="bg-primary-50 w-[16px] h-[16px] rounded-full absolute top-1 left-[22px]"></div>
-	        </div>
-	      </div>
-	    </div>
-	  </div>
-	</div> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .dashboard {
+            width: 90%;
+            max-width: 800px;
+            background-color: #222;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .status div {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+        }
+
+        .main-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .main-stats .box {
+            width: 48%;
+            background-color: #333;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .box h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .cells {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 48%;
+            background-color: #333;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            background-color: #333;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .controls button.active {
+            background-color: #007bff;
+        }
+
+        .highlight {
+            color: #00ff00;
+        }
+
+        .warning {
+            color: #ff0000;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Battery Dashboard</h1>
+            <p>Time: <span class="highlight">24D 5H</span></p>
+        </div>
+
+        <div class="status">
+            <div>Charge: <span class="highlight">ON</span></div>
+            <div>Discharge: <span class="highlight">ON</span></div>
+            <div>Balance: <span class="highlight">ON</span></div>
+        </div>
+
+        <div class="main-stats">
+            <div class="box">
+                <h2>25.79 V</h2>
+                <p>Power Draw: <span class="highlight">-108 W</span></p>
+                <p>Total Capacity: 145 Ah</p>
+                <p>Cycle Capacity: 269.791 Ah</p>
+                <p>Avg Cell V: 3.223 V</p>
+                <p>Balance Curr: 0.00 A</p>
+                <p>Battery T1: 18.9 °C</p>
             </div>
+            <div class="box">
+                <h2>-4.20 A</h2>
+                <p>Remaining: <span class="highlight">12%</span></p>
+                <p>Rem. Capacity: 17.240 Ah</p>
+                <p>Cycle Count: 1</p>
+                <p>Delta Cell V: 0.007 V</p>
+                <p>MOS Temp.: 20.0 °C</p>
+                <p>Battery T2: 19.2 °C</p>
+            </div>
+        </div>
+
+        <div class="cells">
+            <div class="cell">01. <span class="highlight">3.228 V</span> / 57.0 mΩ</div>
+            <div class="cell">02. <span class="highlight">3.222 V</span> / 58.0 mΩ</div>
+            <div class="cell">03. <span class="highlight">3.223 V</span> / 56.0 mΩ</div>
+            <div class="cell">04. <span class="highlight">3.222 V</span> / 55.0 mΩ</div>
+            <div class="cell">05. <span class="warning">3.222 V</span> / 55.0 mΩ</div>
+            <div class="cell">06. <span class="highlight">3.221 V</span> / 55.0 mΩ</div>
+            <div class="cell">07. <span class="highlight">3.223 V</span> / 55.0 mΩ</div>
+            <div class="cell">08. <span class="highlight">3.222 V</span> / 56.0 mΩ</div>
+        </div>
+
+        <div class="controls">
+            <button class="active">Charging</button>
+            <button class="active">Discharging</button>
+            <button class="active">Balancing</button>
+        </div>
+    </div>
+</body>
+</html>
