@@ -266,89 +266,114 @@
         </div>
     </div>    
     <script>
-        // Improved MQTT configuration with better security practices
-        const mqttConfig = {
-            host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
-            port: 8884,
-            clientId: `mqttjs_${Math.random().toString(16).slice(2, 10)}`,
-            username: 'gitweb',
-            password: 'P@h010407852',
-            protocol: 'wss',
-            protocolVersion: 4,
-            clean: true,
-            reconnectPeriod: 2000,
-            connectTimeout: 30000,
-            rejectUnauthorized: true
-        };
+    // Mapeamento de tópicos para data-sensor
+    const topicoParaDataSensor = {
+        'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state': 'charging',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_descarregamento/state': 'discharging',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_total/state': 'total_voltage',
+        'jk-bms-esp32/sensor/jk-bms-esp32_consumo/state': 'power',
+        'jk-bms-esp32/sensor/jk-bms-esp32_total_battery_capacity_setting/state': 'total_battery_capacity_setting',
+        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_total_do_ciclo_de_carregamento/state': 'total_charging_cycle_capacity',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_m__dia_da_c__lula/state': 'average_cell_voltage',
+        'jk-bms-esp32/sensor/jk-bms-esp32_corrente/state': 'current',
+        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_1/state': 'temperature_sensor_1',
+        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante/state': 'capacity_remaining',
+        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante_derivada/state': 'capacity_remaining_derived',
+        'jk-bms-esp32/sensor/jk-bms-esp32_ciclos_de_carregamento/state': 'charging_cycles',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_delta/state': 'delta_cell_voltage',
+        'jk-bms-esp32/sensor/jk-bms-esp32_temperatura_do_tubo_de_pot__ncia/state': 'power_tube_temperature',
+        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_2/state': 'temperature_sensor_2'
+    };
 
-        // Enhanced MQTT client setup
-        const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
+    // Para as células individuais
+    for (let i = 1; i <= 8; i++) {
+        topicoParaDataSensor[`jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_${i}/state`] = `cell_voltage_${i}`;
+    }
 
-        // Improved connection handling
-        client.on('connect', () => {
-            console.log('Connected to MQTT broker');
-            client.subscribe('#', { qos: 1 });
-        });
+    // Configuração MQTT
+    const mqttConfig = {
+        host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
+        port: 8884,
+        clientId: `mqttjs_${Math.random().toString(16).slice(2, 10)}`,
+        username: 'gitweb',
+        password: 'P@h010407852',
+        protocol: 'wss',
+        protocolVersion: 4,
+        clean: true,
+        reconnectPeriod: 2000,
+        connectTimeout: 30000,
+        rejectUnauthorized: true
+    };
 
-        // Enhanced message handling with data validation
-        // Configuração do MQTT permanece igual
-    
+    const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
+
     client.on('connect', () => {
         console.log('Conectado ao broker MQTT');
-        client.subscribe('#', { qos: 1 }, (err) => {
-            if (!err) {
-                console.log('Inscrito em todos os tópicos');
-            }
-        });
+        client.subscribe('#', { qos: 1 });
+        document.querySelector('.title h1').style.color = '#00ff00';
     });
 
-    // Adiciona logs para ver as mensagens chegando
     client.on('message', (topic, message) => {
-        console.log(`Tópico recebido: ${topic}`);
-        console.log(`Mensagem recebida: ${message.toString()}`);
-        
-        const sensorName = topic.split('/').pop();
-        const elementos = document.querySelectorAll(`[data-sensor="${sensorName}"]`);
-        
-        elementos.forEach(elemento => {
-            elemento.textContent = message.toString();
-            console.log(`Atualizando ${sensorName} com valor ${message.toString()}`);
-        });
+        const valor = message.toString();
+        console.log(`Tópico: ${topic}, Valor: ${valor}`);
+
+        // Procura o data-sensor correspondente ao tópico
+        const dataSensor = topicoParaDataSensor[topic];
+        if (dataSensor) {
+            const elementos = document.querySelectorAll(`[data-sensor="${dataSensor}"]`);
+            elementos.forEach(elemento => {
+                // Adiciona unidade conforme o tipo de sensor
+                let valorFormatado = valor;
+                if (dataSensor.includes('voltage')) valorFormatado += ' V';
+                if (dataSensor.includes('current')) valorFormatado += ' A';
+                if (dataSensor.includes('power')) valorFormatado += ' W';
+                if (dataSensor.includes('temperature')) valorFormatado += ' °C';
+                if (dataSensor.includes('capacity') && !dataSensor.includes('remaining')) valorFormatado += ' Ah';
+                if (dataSensor === 'capacity_remaining') valorFormatado += '%';
+
+                elemento.textContent = valorFormatado;
+                // Efeito visual de atualização
+                elemento.style.transition = 'background-color 0.3s';
+                elemento.style.backgroundColor = '#2e4c2e';
+                setTimeout(() => elemento.style.backgroundColor = '', 300);
+            });
+        }
     });
 
-        // Improved switch controls with error handling
-        const switches = {
-            'chargingSwitch': 'switch/charging',
-            'dischargingSwitch': 'switch/discharging',
-            'balancingSwitch': 'sensor/balancing_switch'
-        };
+    // Controles dos switches
+    const switches = {
+        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregando/state',
+        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state',
+        'balancingSwitch': 'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state'
+    };
 
-        Object.entries(switches).forEach(([switchId, topic]) => {
-            const element = document.getElementById(switchId);
-            if (element) {
-                element.addEventListener('change', (e) => {
-                    const value = e.target.checked ? 'ON' : 'OFF';
-                    client.publish(topic, value, { qos: 1, retain: true }, (err) => {
-                        if (err) {
-                            console.error(`Failed to publish to ${topic}:`, err);
-                            e.target.checked = !e.target.checked; // Revert on failure
-                        }
-                    });
+    Object.entries(switches).forEach(([switchId, topic]) => {
+        const elemento = document.getElementById(switchId);
+        if (elemento) {
+            elemento.addEventListener('change', (e) => {
+                const valor = e.target.checked ? 'ON' : 'OFF';
+                client.publish(topic, valor, { qos: 1, retain: true }, (err) => {
+                    if (err) {
+                        console.error(`Falha ao publicar em ${topic}:`, err);
+                        e.target.checked = !e.target.checked;
+                    }
                 });
-            }
-        });
+            });
+        }
+    });
 
-        // Add connection status indicator
-        client.on('close', () => {
-            console.log('Connection closed');
-            document.querySelector('.title h1').style.color = '#ff4444';
-        });
+    // Indicadores de status da conexão
+    client.on('close', () => {
+        console.log('Conexão fechada');
+        document.querySelector('.title h1').style.color = '#ff4444';
+    });
 
-        client.on('reconnect', () => {
-            console.log('Attempting to reconnect...');
-            document.querySelector('.title h1').style.color = '#ffaa44';
-        });
-        
-    </script>
+    client.on('reconnect', () => {
+        console.log('Tentando reconectar...');
+        document.querySelector('.title h1').style.color = '#ffaa44';
+    });
+</script>
 </body>
 </html>
