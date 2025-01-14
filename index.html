@@ -247,21 +247,21 @@
         <div class="controls">
             <div>
                 <label class="switch">
-                    <input type="checkbox" data-switch="charging">
+                    <input type="checkbox" id="chargingSwitch">
                     <span class="slider"></span>
                 </label>
                 <div class="control-label">Charging</div>
             </div>
             <div>
                 <label class="switch">
-                    <input type="checkbox" data-switch="discharging">
+                    <input type="checkbox" id="dischargingSwitch">
                     <span class="slider"></span>
                 </label>
                 <div class="control-label">Discharging</div>
             </div>
             <div>
                 <label class="switch">
-                    <input type="checkbox" data-switch="balancing">
+                    <input type="checkbox" id="balancingSwitch">
                     <span class="slider"></span>
                 </label>
                 <div class="control-label">Balancing</div>
@@ -270,86 +270,40 @@
     </div>
 
     <script>
-        const mqttConfig = {
-    host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
-    port: 8883,
-    protocol: 'wss',
-    username: 'martyello',
-    password: 'P@h010407852',
-    clientId: 'jkbms_web_' + Math.random().toString(16).substr(2, 8),
-    keepalive: 15,
-    ca: `-----BEGIN CERTIFICATE-----
-    MIIFYDCCBEigAwIBAgIQQAF3ITfU6UK47naqPGQKtzANBgkqhkiG9w0BAQsFADA/
-    MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT
-    DkRTVCBSb290IENBIFgzMB4XDTIxMDEyMDE5MTQwM1oXDTI0MDkzMDE4MTQwM1ow
-    TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh
-    cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwggIiMA0GCSqGSIb3DQEB
-    AQUAA4ICDwAwggIKAoICAQCt6CRz9BQ385ueK1coHIe+3LffOJCMbjzmV6B493XC
-    ov71am72AE8o295ohmxEk7axY/0UEmu/H9LqMZshftEzPLpI9d1537O4/xLxIZpL
-    wYqGcWlKZmZsj348cL+tKSIG8+TA5oCu4kuPt5l+lAOf00eXfJlII1PoOK5PCm+D
-    LtFJV4yAdLbaL9A4jXsDcCEbdfIwPPqPrt3aY6vrFk/CjhFLfs8L6P+1dy70sntK
-    4EwSJQxwjQMpoOFTJOwT2e4ZvxCzSow/iaNhUd6shweU9GNx7C7ib1uYgeGJXDR5
-    bHbvO5BieebbpJovJsXQEOEO3tkQjhb7t/eo98flAgeYjzYIlefiN5YNNnWe+w5y
-    sR2bvAP5SQXYgd0FtCrWQemsAXaVCg/Y39W9Eh81LygXbNKYwagJZHduRze6zqxZ
-    Xmidf3LWicUGQSk+WT7dJvUkyRGnWqNMQB9GoZm1pzpRboY7nn1ypxIFeFntPlF4
-    FQsDj43QLwWyPntKHEtzBRL8xurgUBN8Q5N0s8p0544fAQjQMNRbcTa0B7rBMDBc
-    SLeCO5imfWCKoqMpgsy6vYMEG6KDA0Gh1gXxG8K28Kh8hjtGqEgqiNx2mna/H2ql
-    PRmP6zjzZN7IKw0KKP/32+IVQtQi0Cdd4Xn+GOdwiK1O5tmLOsbdJ1Fu/7xk9TND
-    TwIDAQABo4IBRjCCAUIwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYw
-    SwYIKwYBBQUHAQEEPzA9MDsGCCsGAQUFBzAChi9odHRwOi8vYXBwcy5pZGVudHJ1
-    c3QuY29tL3Jvb3RzL2RzdHJvb3RjYXgzLnA3YzAfBgNVHSMEGDAWgBTEp7Gkeyxx
-    +tvhS5B1/8QVYIWJEDBUBgNVHSAETTBLMAgGBmeBDAECATA/BgsrBgEEAYLfEwEB
-    ATAwMC4GCCsGAQUFBwIBFiJodHRwOi8vY3BzLnJvb3QteDEubGV0c2VuY3J5cHQu
-    b3JnMDwGA1UdHwQ1MDMwMaAvoC2GK2h0dHA6Ly9jcmwuaWRlbnRydXN0LmNvbS9E
-    U1RST09UQ0FYM0NSTC5jcmwwHQYDVR0OBBYEFHm0WeZ7tuXkAXOACIjIGlj26Ztu
-    MA0GCSqGSIb3DQEBCwUAA4IBAQAKcwBslm7/DlLQrt2M51oGrS+o44+/yQoDFVDC
-    5WxCu2+b9LRPwkSICHXM6webFGJueN7sJ7o5XPWioW5WlHAQU7G75K/QosMrAdSW
-    9MUgNTP52GE24HGNtLi1qoJFlcDyqSMo59ahy2cI2qBDLKobkx/J3vWraV0T9VuG
-    WCLKTVXkcGdtwlfFRjlBz4pYg1htmf5X6DYO8A4jqv2Il9DjXA6USbW1FzXSLr9O
-    he8Y4IWS6wY7bCkjCWDcRQJMEhg76fsO3txE+FiYruq9RUWhiF1myv4Q6W+CyBFC
-    Dfvp7OOGAN6dEOM4+qR9sdjoSYKEBpsr6GtPAQw4dy753ec5
-    -----END CERTIFICATE-----`
-};
-
-const client = mqtt.connect(mqttConfig);
-
-// Inscreve em todos os tópicos relevantes
-client.on('connect', () => {
-    console.log('Conectado ao broker MQTT');
-    // Inscreve em todos os tópicos do seu dispositivo
-    client.subscribe('jk-bms-esp32/#');
-});
-
-// Quando receber uma mensagem MQTT
-client.on('message', (topic, message) => {
-    try {
-        const valor = message.toString();
-        // Extrai o nome do sensor do tópico (última parte após a /)
-        const nomeSensor = topic.split('/').pop();
-        
-        // Atualiza elementos HTML que têm o data-sensor correspondente
-        const elementos = document.querySelectorAll(`[data-sensor="${nomeSensor}"]`);
-        elementos.forEach(elemento => {
-            if (elemento) {
-                elemento.textContent = valor;
-            }
+        // MQTT Setup
+        const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
+            clientId: 'web_client_' + Math.random().toString(16).substr(2, 8),
+            username: 'your_username', // use your MQTT username here
+            password: 'your_password', // use your MQTT password here
+            clean: true
         });
 
-        // Atualiza os switches se o tópico corresponder
-        const elementosSwitch = document.querySelectorAll(`[data-switch="${nomeSensor}"]`);
-        elementosSwitch.forEach(elemento => {
-            if (elemento) {
-                elemento.checked = valor === 'ON';
-            }
+        client.on('connect', function () {
+            console.log('Connected to MQTT broker');
+            client.subscribe('battery/status', function (err) {
+                if (!err) {
+                    console.log('Subscribed to battery/status topic');
+                }
+            });
         });
 
-        // Mantém a funcionalidade de colorir as células
-        updateCellColors();
-    } catch (erro) {
-        console.log('Erro ao processar mensagem:', erro);
-    }
-});
+        client.on('message', function (topic, message) {
+            console.log('Received message:', message.toString());
+            const data = JSON.parse(message.toString());
+
+            // Update the dashboard elements with the received data
+            document.querySelector('[data-sensor="total_voltage"]').textContent = `${data.total_voltage} V`;
+            document.querySelector('[data-sensor="total_runtime_formatted"]').textContent = data.total_runtime_formatted;
+            document.querySelector('[data-sensor="charging"]').textContent = data.charging ? "ON" : "OFF";
+            document.querySelector('[data-sensor="discharging"]').textContent = data.discharging ? "ON" : "OFF";
+            document.querySelector('[data-sensor="balancing"]').textContent = data.balancing ? "ON" : "OFF";
+            document.querySelector('[data-sensor="power"]').textContent = `${data.power} W`;
+            document.querySelector('[data-sensor="total_battery_capacity_setting"]').textContent = `${data.total_battery_capacity_setting} Ah`;
+            document.querySelector('[data-sensor="total_charging_cycle_capacity"]').textContent = `${data.total_charging_cycle_capacity} Ah`;
+            document.querySelector('[data-sensor="average_cell_voltage"]').textContent = `${data.average_cell_voltage} V`;
+            document.querySelector('[data-sensor="current"]').textContent = `${data.current} A`;
+            document.querySelector('[data-sensor="temperature_sensor_1"]').textContent = `${data.temperature_sensor_1} °C`;
+        });
     </script>
 </body>
 </html>
-
