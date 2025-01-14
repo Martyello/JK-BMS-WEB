@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
-    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
-    connect-src 'self' wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884">
-    <title>JKBMS WEB ESP32</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
-    <style>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com">
+					<title>JKBMS WEB ESP32</title>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"/>
+					<style>
         body {
             font-family: Arial, sans-serif;
             background-color: #181818;
@@ -191,107 +187,180 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="dashboard">
-        <div class="title">
-            <h1>JKBMS WEB ESP32</h1>
-        </div>
-
-        <div class="header">
-            <p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span></p>
-        </div>
-
-        <div class="status">
-            <div>Charge: <span data-sensor="charging" class="highlight">OFF</span></div>
-            <div>Discharge: <span data-sensor="discharging" class="highlight">OFF</span></div>
-            <div>Balance: <span data-sensor="balancing" class="highlight">OFF</span></div>
-        </div>
-
-        <div class="main-stats">
-            <div class="box">
-                <center>
-                    <h1><span data-sensor="total_voltage" class="highlight">0.00 V</span></h1>
-                    <p>Power Draw: <span data-sensor="power" class="highlight">0 W</span></p>
-                    <p>Total Capacity: <span data-sensor="total_battery_capacity_setting" class="highlight">0 Ah</span></p>
-                    <p>Cycle Capacity: <span data-sensor="total_charging_cycle_capacity" class="highlight">0 Ah</span></p>
-                    <p>Avg Cell V: <span data-sensor="average_cell_voltage" class="highlight">0.000 V</span></p>
-                    <p>Balance Curr: <span data-sensor="current" class="highlight">0.00 A</span></p>
-                    <p>Battery T1: <span data-sensor="temperature_sensor_1" class="highlight">0.0 °C</span></p>
-                </center>
-            </div>
-            <div class="box">
-                <center>
-                    <h1><span data-sensor="current" class="highlight">0.00 A</span></h1>
-                    <p>Remaining: <span data-sensor="capacity_remaining" class="highlight">0%</span></p>
-                    <p>Rem. Capacity: <span data-sensor="capacity_remaining_derived" class="highlight">0.000 Ah</span></p>
-                    <p>Cycle Count: <span data-sensor="charging_cycles" class="highlight">0</span></p>
-                    <p>Delta Cell V: <span data-sensor="delta_cell_voltage" class="highlight">0.000 V</span></p>
-                    <p>MOS Temp.: <span data-sensor="power_tube_temperature" class="highlight">0.0 °C</span></p>
-                    <p>Battery T2: <span data-sensor="temperature_sensor_2" class="highlight">0.0 °C</span></p>
-                </center>
-            </div>
-        </div>
-
-        <div class="cells">
-            <div class="cell">01. <span data-sensor="cell_voltage_1">0.000 V</span> / <span data-sensor="cell_resistance_1">0.0 mΩ</span></div>
-            <div class="cell">02. <span data-sensor="cell_voltage_2">0.000 V</span> / <span data-sensor="cell_resistance_2">0.0 mΩ</span></div>
-            <div class="cell">03. <span data-sensor="cell_voltage_3">0.000 V</span> / <span data-sensor="cell_resistance_3">0.0 mΩ</span></div>
-            <div class="cell">04. <span data-sensor="cell_voltage_4">0.000 V</span> / <span data-sensor="cell_resistance_4">0.0 mΩ</span></div>
-            <div class="cell">05. <span data-sensor="cell_voltage_5">0.000 V</span> / <span data-sensor="cell_resistance_5">0.0 mΩ</span></div>
-            <div class="cell">06. <span data-sensor="cell_voltage_6">0.000 V</span> / <span data-sensor="cell_resistance_6">0.0 mΩ</span></div>
-            <div class="cell">07. <span data-sensor="cell_voltage_7">0.000 V</span> / <span data-sensor="cell_resistance_7">0.0 mΩ</span></div>
-            <div class="cell">08. <span data-sensor="cell_voltage_8">0.000 V</span> / <span data-sensor="cell_resistance_8">0.0 mΩ</span></div>
-        </div>
-
-        <div class="controls">
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="chargingSwitch">
-                    <span class="slider"></span>
-                </label>
-                <div class="control-label">Charging</div>
-            </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="dischargingSwitch">
-                    <span class="slider"></span>
-                </label>
-                <div class="control-label">Discharging</div>
-            </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="balancingSwitch">
-                    <span class="slider"></span>
-                </label>
-                <div class="control-label">Balancing</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+				</head>
+				<body>
+					<div class="dashboard">
+						<div class="title">
+							<h1>JKBMS WEB ESP32</h1>
+						</div>
+						<div class="header">
+							<p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span>
+							</p>
+						</div>
+						<div class="status">
+							<div>Charge: <span data-sensor="charging" class="highlight">OFF</span>
+							</div>
+							<div>Discharge: <span data-sensor="discharging" class="highlight">OFF</span>
+							</div>
+							<div>Balance: <span data-sensor="balancing" class="highlight">OFF</span>
+							</div>
+						</div>
+						<div class="main-stats">
+							<div class="box">
+								<center>
+									<h1>
+										<span data-sensor="total_voltage" class="highlight">0.00 V</span>
+									</h1>
+									<p>Power Draw: <span data-sensor="power" class="highlight">0 W</span>
+									</p>
+									<p>Total Capacity: <span data-sensor="total_battery_capacity_setting" class="highlight">0 Ah</span>
+									</p>
+									<p>Cycle Capacity: <span data-sensor="total_charging_cycle_capacity" class="highlight">0 Ah</span>
+									</p>
+									<p>Avg Cell V: <span data-sensor="average_cell_voltage" class="highlight">0.000 V</span>
+									</p>
+									<p>Balance Curr: <span data-sensor="current" class="highlight">0.00 A</span>
+									</p>
+									<p>Battery T1: <span data-sensor="temperature_sensor_1" class="highlight">0.0 °C</span>
+									</p>
+								</center>
+							</div>
+							<div class="box">
+								<center>
+									<h1>
+										<span data-sensor="current" class="highlight">0.00 A</span>
+									</h1>
+									<p>Remaining: <span data-sensor="capacity_remaining" class="highlight">0%</span>
+									</p>
+									<p>Rem. Capacity: <span data-sensor="capacity_remaining_derived" class="highlight">0.000 Ah</span>
+									</p>
+									<p>Cycle Count: <span data-sensor="charging_cycles" class="highlight">0</span>
+									</p>
+									<p>Delta Cell V: <span data-sensor="delta_cell_voltage" class="highlight">0.000 V</span>
+									</p>
+									<p>MOS Temp.: <span data-sensor="power_tube_temperature" class="highlight">0.0 °C</span>
+									</p>
+									<p>Battery T2: <span data-sensor="temperature_sensor_2" class="highlight">0.0 °C</span>
+									</p>
+								</center>
+							</div>
+						</div>
+						<div class="cells">
+							<div class="cell">01. <span data-sensor="cell_voltage_1">0.000 V</span> / <span data-sensor="cell_resistance_1">0.0 mΩ</span>
+							</div>
+							<div class="cell">02. <span data-sensor="cell_voltage_2">0.000 V</span> / <span data-sensor="cell_resistance_2">0.0 mΩ</span>
+							</div>
+							<div class="cell">03. <span data-sensor="cell_voltage_3">0.000 V</span> / <span data-sensor="cell_resistance_3">0.0 mΩ</span>
+							</div>
+							<div class="cell">04. <span data-sensor="cell_voltage_4">0.000 V</span> / <span data-sensor="cell_resistance_4">0.0 mΩ</span>
+							</div>
+							<div class="cell">05. <span data-sensor="cell_voltage_5">0.000 V</span> / <span data-sensor="cell_resistance_5">0.0 mΩ</span>
+							</div>
+							<div class="cell">06. <span data-sensor="cell_voltage_6">0.000 V</span> / <span data-sensor="cell_resistance_6">0.0 mΩ</span>
+							</div>
+							<div class="cell">07. <span data-sensor="cell_voltage_7">0.000 V</span> / <span data-sensor="cell_resistance_7">0.0 mΩ</span>
+							</div>
+							<div class="cell">08. <span data-sensor="cell_voltage_8">0.000 V</span> / <span data-sensor="cell_resistance_8">0.0 mΩ</span>
+							</div>
+						</div>
+						<div class="controls">
+							<div>
+								<label class="switch">
+									<input type="checkbox" id="chargingSwitch">
+										<span class="slider"/>
+									</label>
+									<div class="control-label">Charging</div>
+								</div>
+								<div>
+									<label class="switch">
+										<input type="checkbox" id="dischargingSwitch">
+											<span class="slider"/>
+										</label>
+										<div class="control-label">Discharging</div>
+									</div>
+									<div>
+										<label class="switch">
+											<input type="checkbox" id="balancingSwitch">
+												<span class="slider"/>
+											</label>
+											<div class="control-label">Balancing</div>
+										</div>
+									</div>
+								</div>
+								<script>
         // Função para conectar-se ao MQTT
         const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
-            clientId: 'mqtt_dashboard',
-            username: 'gitweb',
-            password: 'P@h010407852'
-        });
+    clientId: 'mqtt_dashboard_' + Math.random().toString(16).substr(2, 8),
+    username: 'gitweb',
+    password: 'P@h010407852',
+    protocol: 'wss',
+    rejectUnauthorized: false
+});
+
 
         client.on('connect', () => {
-            console.log('Conectado ao broker MQTT!');
-            // Assinando tópicos
-            client.subscribe('sensor/+/status');
-            client.subscribe('sensor/+/voltage');
-            client.subscribe('sensor/+/capacity');
-        });
+    console.log('Conectado ao broker MQTT!');
+    
+    // Binary sensors
+    client.subscribe('sensor/balancing');
+    client.subscribe('sensor/balancing_switch');
+    client.subscribe('sensor/charging');
+    client.subscribe('sensor/discharging');
+    client.subscribe('sensor/dedicated_charger_switch');
+    client.subscribe('sensor/online_status');
+    
+    // Sensores principais
+    client.subscribe('sensor/total_voltage');
+    client.subscribe('sensor/current');
+    client.subscribe('sensor/power');
+    client.subscribe('sensor/capacity_remaining');
+    client.subscribe('sensor/capacity_remaining_derived');
+    client.subscribe('sensor/charging_cycles');
+    client.subscribe('sensor/total_charging_cycle_capacity');
+    client.subscribe('sensor/total_battery_capacity_setting');
+    
+    // Sensores de células
+    for (let i = 1; i <= 8; i++) { client.subscribe(`sensor cell_voltage_${i}`); } Sensores de temperatura client.subscribe('sensor power_tube_temperature'); client.subscribe('sensor temperature_sensor_1'); client.subscribe('sensor temperature_sensor_2'); Sensores de média e delta client.subscribe('sensor average_cell_voltage'); client.subscribe('sensor delta_cell_voltage'); Text sensors client.subscribe('text_sensor total_runtime_formatted'); client.subscribe('text_sensor errors'); client.subscribe('text_sensor operation_mode'); }); Controles dos switches const switches={ 'chargingSwitch':'switch/charging' ,'dischargingSwitch' :'switch/discharging' ,'balancingSwitch' :'sensor/balancing_switch' }; Object.keys(switches).forEach(switchId=> {
+    document.getElementById(switchId).addEventListener('change', function(e) {
+        const topic = switches[switchId];
+        const value = e.target.checked ? 'ON' : 'OFF';
+        client.publish(topic, value);
+        console.log(`Publicado ${value} em ${topic}`);
+    });
+});
+
+
+        client.on('error', (error) => {
+    console.log('MQTT Error:', error);
+});
+
+client.on('offline', () => {
+    console.log('MQTT Client is offline');
+});
+
+client.on('reconnect', () => {
+    console.log('MQTT Client is trying to reconnect');
+});
+
 
         client.on('message', (topic, message) => {
-            // Atualizando o DOM com os valores recebidos
-            const sensor = topic.split('/')[1];
-            const value = message.toString();
-
-            document.querySelector(`[data-sensor="${sensor}_status"]`).textContent = value;
-        });
+    try {
+        const valor = message.toString();
+        const sensor = topic.split('/')[1]; // Pega o nome do sensor do tópico
+        
+        const elementos = document.querySelectorAll(`[data-sensor="${sensor}"]`);
+        if (elementos.length > 0) {
+            elementos.forEach(elemento => {
+                elemento.textContent = valor;
+                console.log(`Atualizado ${sensor}: ${valor}`);
+            });
+        } else {
+            console.log(`Sensor não encontrado no DOM: ${sensor}`);
+        }
+    } catch (erro) {
+        console.error('Erro ao processar mensagem:', erro);
+    }
+});
     </script>
-</body>
-</html>
+								</body>
+							</html>
