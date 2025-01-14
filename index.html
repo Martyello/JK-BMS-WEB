@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://martyello.duckdns.org:9595; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' broker.hivemq.com:8884; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; connect-src 'self' wss://broker.hivemq.com:8884">
     <title>JKBMS WEB ESP32</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -265,43 +266,48 @@
     </div>
 
     <script>
-        const updateInterval = 5000;
+        const mqttConfig = {
+    host: 'broker.hivemq.com',
+    port: 8884,
+    protocol: 'wss',
+    path: '/mqtt'
+};
 
-function updateData() {
-    fetch('http://martyello.duckdns.org:9595/api/states')
-        .then(response => response.json())
-        .then(data => {
-            // Atualiza os sensores
-            document.querySelectorAll('[data-sensor]').forEach(element => {
-                const sensorId = element.getAttribute('data-sensor');
-                const sensorValue = data[`${sensorId}`];
-                if (sensorValue) {
-                    element.textContent = sensorValue;
-                }
-            });
+const client = mqtt.connect(mqttConfig);
+const topic = 'jkbms/sensors';
 
-            // Atualiza os switches
-            document.querySelectorAll('[data-switch]').forEach(element => {
-                const switchId = element.getAttribute('data-switch');
-                const switchValue = data[`${switchId}`];
-                if (switchValue) {
-                    element.checked = switchValue === 'ON';
-                }
-            });
-
-            updateCellColors();
-        })
-        .catch(error => console.log('Erro ao atualizar dados:', error));
-}
-
-document.querySelectorAll('[data-switch]').forEach(element => {
-    element.addEventListener('change', function() {
-        const switchId = this.getAttribute('data-switch');
-        fetch(`http://martyello.duckdns.org:9595/api/switch/${switchId}/toggle`, {
-            method: 'POST'
-        });
-    });
+client.on('connect', () => {
+    console.log('Conectado ao broker MQTT');
+    client.subscribe(topic);
 });
+
+client.on('message', (topic, message) => {
+    try {
+        const data = JSON.parse(message.toString());
+        updateSensors(data);
+        updateCellColors();
+    } catch (error) {
+        console.log('Erro ao processar mensagem:', error);
+    }
+});
+
+function updateSensors(data) {
+    document.querySelectorAll('[data-sensor]').forEach(element => {
+        const sensorId = element.getAttribute('data-sensor');
+        const sensorValue = data[sensorId];
+        if (sensorValue !== undefined) {
+            element.textContent = sensorValue;
+        }
+    });
+
+    document.querySelectorAll('[data-switch]').forEach(element => {
+        const switchId = element.getAttribute('data-switch');
+        const switchValue = data[switchId];
+        if (switchValue !== undefined) {
+            element.checked = switchValue === 'ON';
+        }
+    });
+}
 
 function updateCellColors() {
     const cells = document.querySelectorAll('.cell span[data-sensor^="cell_voltage_"]');
@@ -325,8 +331,17 @@ function updateCellColors() {
     voltages[voltages.length - 1].element.className = 'highest';
 }
 
-setInterval(updateData, updateInterval);
-updateData();
+// Controle dos switches
+document.querySelectorAll('[data-switch]').forEach(element => {
+    element.addEventListener('change', function() {
+        const switchId = this.getAttribute('data-switch');
+        const state = this.checked ? 'ON' : 'OFF';
+        client.publish('jkbms/control', JSON.stringify({
+            switch: switchId,
+            state: state
+        }));
+    });
+});
 
     </script>
 </body>
