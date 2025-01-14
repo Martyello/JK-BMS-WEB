@@ -274,10 +274,10 @@
     host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
     port: 8884,
     protocol: 'wss',
-    path: '/mqtt',
     username: 'martyello',
     password: 'P@h010407852',
-    clientId: 'jkbms_web_' + Math.random().toString(16).substr(2, 8)
+    clientId: 'jkbms_web_' + Math.random().toString(16).substr(2, 8),
+    hostname: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud'
 };
 
 const client = mqtt.connect(mqttConfig);
