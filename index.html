@@ -266,7 +266,6 @@
         </div>
     </div>    
     <script>
-    // Mapeamento de tópicos para data-sensor
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
         'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state': 'charging',
@@ -284,15 +283,34 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_ciclos_de_carregamento/state': 'charging_cycles',
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_delta/state': 'delta_cell_voltage',
         'jk-bms-esp32/sensor/jk-bms-esp32_temperatura_do_tubo_de_pot__ncia/state': 'power_tube_temperature',
-        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_2/state': 'temperature_sensor_2'
+        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_2/state': 'temperature_sensor_2',
+        
+        // Tensões das células
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_1/state': 'cell_voltage_1',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_2/state': 'cell_voltage_2',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_3/state': 'cell_voltage_3',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_4/state': 'cell_voltage_4',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_5/state': 'cell_voltage_5',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_6/state': 'cell_voltage_6',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_7/state': 'cell_voltage_7',
+        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_8/state': 'cell_voltage_8',
+
+        // Resistências das células
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_1/state': 'cell_resistance_1',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_2/state': 'cell_resistance_2',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_3/state': 'cell_resistance_3',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_4/state': 'cell_resistance_4',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_5/state': 'cell_resistance_5',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_6/state': 'cell_resistance_6',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_7/state': 'cell_resistance_7',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist__ncia_da_c__lula_8/state': 'cell_resistance_8',
+
+        // Status dos switches
+        'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging_switch_status',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing_switch_status'
     };
 
-    // Para as células individuais
-    for (let i = 1; i <= 8; i++) {
-        topicoParaDataSensor[`jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_${i}/state`] = `cell_voltage_${i}`;
-    }
-
-    // Configuração MQTT
     const mqttConfig = {
         host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
         port: 8884,
@@ -319,21 +337,35 @@
         const valor = message.toString();
         console.log(`Tópico: ${topic}, Valor: ${valor}`);
 
-        // Procura o data-sensor correspondente ao tópico
+        // Atualizar estado dos switches
+        if (topic.includes('carregando/state')) {
+            document.getElementById('chargingSwitch').checked = valor === 'ON';
+        }
+        if (topic.includes('descarregando/state')) {
+            document.getElementById('dischargingSwitch').checked = valor === 'ON';
+        }
+        if (topic.includes('balanceamento/state')) {
+            document.getElementById('balancingSwitch').checked = valor === 'ON';
+        }
+
+        // Atualizar sensores
         const dataSensor = topicoParaDataSensor[topic];
         if (dataSensor) {
             const elementos = document.querySelectorAll(`[data-sensor="${dataSensor}"]`);
             elementos.forEach(elemento => {
-                // Adiciona unidade conforme o tipo de sensor
                 let valorFormatado = valor;
+                
+                // Adicionar unidades apropriadas
                 if (dataSensor.includes('voltage')) valorFormatado += ' V';
                 if (dataSensor.includes('current')) valorFormatado += ' A';
                 if (dataSensor.includes('power')) valorFormatado += ' W';
                 if (dataSensor.includes('temperature')) valorFormatado += ' °C';
                 if (dataSensor.includes('capacity') && !dataSensor.includes('remaining')) valorFormatado += ' Ah';
                 if (dataSensor === 'capacity_remaining') valorFormatado += '%';
+                if (dataSensor.includes('resistance')) valorFormatado += ' mΩ';
 
                 elemento.textContent = valorFormatado;
+                
                 // Efeito visual de atualização
                 elemento.style.transition = 'background-color 0.3s';
                 elemento.style.backgroundColor = '#2e4c2e';
@@ -342,11 +374,11 @@
         }
     });
 
-    // Controles dos switches
+    // Configuração dos switches
     const switches = {
-        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregando/state',
-        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state',
-        'balancingSwitch': 'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state'
+        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregando/command',
+        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/command',
+        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/command'
     };
 
     Object.entries(switches).forEach(([switchId, topic]) => {
