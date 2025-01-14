@@ -277,75 +277,43 @@
 };
 
 const client = mqtt.connect(mqttConfig);
-const topic = 'jkbms/sensors';
 
+// Inscreve em todos os tópicos relevantes
 client.on('connect', () => {
     console.log('Conectado ao broker MQTT');
-    client.subscribe(topic);
+    // Inscreve em todos os tópicos do seu dispositivo
+    client.subscribe('jk-bms-esp32/#');
 });
 
+// Quando receber uma mensagem MQTT
 client.on('message', (topic, message) => {
     try {
-        const data = JSON.parse(message.toString());
-        updateSensors(data);
+        const valor = message.toString();
+        // Extrai o nome do sensor do tópico (última parte após a /)
+        const nomeSensor = topic.split('/').pop();
+        
+        // Atualiza elementos HTML que têm o data-sensor correspondente
+        const elementos = document.querySelectorAll(`[data-sensor="${nomeSensor}"]`);
+        elementos.forEach(elemento => {
+            if (elemento) {
+                elemento.textContent = valor;
+            }
+        });
+
+        // Atualiza os switches se o tópico corresponder
+        const elementosSwitch = document.querySelectorAll(`[data-switch="${nomeSensor}"]`);
+        elementosSwitch.forEach(elemento => {
+            if (elemento) {
+                elemento.checked = valor === 'ON';
+            }
+        });
+
+        // Mantém a funcionalidade de colorir as células
         updateCellColors();
-    } catch (error) {
-        console.log('Erro ao processar mensagem:', error);
+    } catch (erro) {
+        console.log('Erro ao processar mensagem:', erro);
     }
 });
-
-function updateSensors(data) {
-    document.querySelectorAll('[data-sensor]').forEach(element => {
-        const sensorId = element.getAttribute('data-sensor');
-        const sensorValue = data[sensorId];
-        if (sensorValue !== undefined) {
-            element.textContent = sensorValue;
-        }
-    });
-
-    document.querySelectorAll('[data-switch]').forEach(element => {
-        const switchId = element.getAttribute('data-switch');
-        const switchValue = data[switchId];
-        if (switchValue !== undefined) {
-            element.checked = switchValue === 'ON';
-        }
-    });
-}
-
-function updateCellColors() {
-    const cells = document.querySelectorAll('.cell span[data-sensor^="cell_voltage_"]');
-    let voltages = [];
-    
-    cells.forEach(cell => {
-        const voltage = parseFloat(cell.textContent);
-        voltages.push({
-            element: cell,
-            voltage: voltage
-        });
-    });
-
-    voltages.sort((a, b) => a.voltage - b.voltage);
-
-    cells.forEach(cell => {
-        cell.className = 'highlight';
-    });
-
-    voltages[0].element.className = 'lowest';
-    voltages[voltages.length - 1].element.className = 'highest';
-}
-
-// Controle dos switches
-document.querySelectorAll('[data-switch]').forEach(element => {
-    element.addEventListener('change', function() {
-        const switchId = this.getAttribute('data-switch');
-        const state = this.checked ? 'ON' : 'OFF';
-        client.publish('jkbms/control', JSON.stringify({
-            switch: switchId,
-            state: state
-        }));
-    });
-});
-
     </script>
 </body>
 </html>
