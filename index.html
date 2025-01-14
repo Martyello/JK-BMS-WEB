@@ -343,21 +343,47 @@ const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, 
     });
 
     client.on('message', (topic, message) => {
-        try {
-            const valor = message.toString();
-            const sensorType = topic.split('/')[1];
-            
-            const elementos = document.querySelectorAll(`[data-sensor="${sensorType}"]`);
-            if (elementos.length > 0) {
-                elementos.forEach(elemento => {
-                    elemento.textContent = valor;
-                    console.log(`Atualizado ${sensorType}: ${valor}`);
-                });
-            }
-        } catch (erro) {
-            console.error('Erro ao processar mensagem:', erro);
+    try {
+        const valor = message.toString();
+        // Remove o prefixo 'sensor/' ou 'text_sensor/' para corresponder aos data-sensor
+        const sensorType = topic.replace('sensor/', '').replace('text_sensor/', '');
+        
+        // Encontra elementos com o data-sensor correspondente
+        const elementos = document.querySelectorAll(`[data-sensor="${sensorType}"]`);
+        
+        if (elementos.length > 0) {
+            elementos.forEach(elemento => {
+                // Adiciona unidades apropriadas baseado no tipo do sensor
+                let displayValue = valor;
+                
+                // Adiciona unidades
+                if (sensorType.includes('voltage')) displayValue += ' V';
+                if (sensorType.includes('current')) displayValue += ' A';
+                if (sensorType.includes('power')) displayValue += ' W';
+                if (sensorType.includes('temperature')) displayValue += ' °C';
+                if (sensorType.includes('capacity') && !sensorType.includes('remaining')) displayValue += ' Ah';
+                if (sensorType === 'capacity_remaining') displayValue += '%';
+                
+                // Atualiza o texto do elemento
+                elemento.textContent = displayValue;
+                
+                // Atualiza estado dos switches
+                if (['charging', 'discharging', 'balancing'].includes(sensorType)) {
+                    const switchElement = document.getElementById(`${sensorType}Switch`);
+                    if (switchElement) {
+                        switchElement.checked = valor === 'ON';
+                    }
+                }
+                
+                console.log(`Atualizado ${sensorType}: ${displayValue}`);
+            });
         }
-    });
+    } catch (erro) {
+        console.log('Mensagem recebida:', topic, message.toString());
+        console.error('Erro ao processar mensagem:', erro);
+    }
+});
+
 
     // Controles dos switches
     const switches = {
