@@ -268,32 +268,31 @@
         const updateInterval = 5000;
 
         function updateData() {
-    fetch('http://192.168.6.44/states')
-        .then(response => response.json())
-        .then(data => {
-            // Atualiza os sensores
-            document.querySelectorAll('[data-sensor]').forEach(element => {
-                const sensorId = element.getAttribute('data-sensor');
-                const sensorValue = data[`${sensorId}`];
-                if (sensorValue) {
-                    element.textContent = sensorValue;
-                }
-            });
+            fetch('http://192.168.6.44/states')
+                .then(response => response.json())
+                .then(data => {
+                    // Atualiza os sensores
+                    document.querySelectorAll('[data-sensor]').forEach(element => {
+                        const sensorId = element.getAttribute('data-sensor');
+                        const sensorValue = data[`${sensorId}`];
+                        if (sensorValue) {
+                            element.textContent = sensorValue;
+                        }
+                    });
 
-            // Atualiza os switches
-            document.querySelectorAll('[data-switch]').forEach(element => {
-                const switchId = element.getAttribute('data-switch');
-                const switchValue = data[`${switchId}`];
-                if (switchValue) {
-                    element.checked = switchValue === 'ON';
-                }
-            });
+                    // Atualiza os switches
+                    document.querySelectorAll('[data-switch]').forEach(element => {
+                        const switchId = element.getAttribute('data-switch');
+                        const switchValue = data[`${switchId}`];
+                        if (switchValue) {
+                            element.checked = switchValue === 'ON';
+                        }
+                    });
 
-            updateCellColors();
-        })
-        .catch(error => console.log('Erro ao atualizar dados:', error));
-}
-
+                    updateCellColors();
+                })
+                .catch(error => console.log('Erro ao atualizar dados:', error));
+        }
 
         document.querySelectorAll('[data-switch]').forEach(element => {
             element.addEventListener('change', function() {
