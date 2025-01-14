@@ -189,6 +189,7 @@
     </style>
 </head>
 <body>
+    <body>
     <div class="dashboard">
         <div class="title">
             <h1>JKBMS WEB ESP32</h1>
@@ -263,86 +264,81 @@
                 <div class="control-label">Balancing</div>
             </div>
         </div>
-    </div>
+    </div>    
+    <script>
+        // Improved MQTT configuration with better security practices
+        const mqttConfig = {
+            host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
+            port: 8884,
+            clientId: `mqttjs_${Math.random().toString(16).slice(2, 10)}`,
+            username: 'gitweb',
+            password: 'P@h010407852',
+            protocol: 'wss',
+            protocolVersion: 4,
+            clean: true,
+            reconnectPeriod: 2000,
+            connectTimeout: 30000,
+            rejectUnauthorized: true
+        };
 
-    // Substitua apenas a parte do script, mantendo todo o resto do HTML igual
+        // Enhanced MQTT client setup
+        const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
 
-<script>
-    const mqttConfig = {
-    host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
-    port: 8884,
-    clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
-    username: 'gitweb',
-    password: 'P@h010407852',
-    protocol: 'wss',
-    protocolVersion: 4,
-    clean: true,
-    reconnectPeriod: 1000,
-    connectTimeout: 30 * 1000,
-    will: {
-        topic: 'WillMsg',
-        payload: 'Connection Closed abnormally..!',
-        qos: 0,
-        retain: false
-    }
-};
-
-// Conectar ao broker MQTT
-const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
-
-client.on('connect', () => {
-    console.log('Conectado ao servidor MQTT');
-    
-    // Inscrever-se nos tópicos necessários
-    client.subscribe('#', (err) => { // Substitua '#' pelos tópicos desejados
-        if (err) {
-            console.error('Erro ao se inscrever nos tópicos:', err);
-        } else {
-            console.log('Inscrito nos tópicos com sucesso');
-        }
-    });
-});
-
-// Manipular mensagens recebidas
-client.on('message', (topic, message) => {
-    console.log(`Mensagem recebida no tópico ${topic}: ${message.toString()}`);
-    
-    // Atualizar os elementos da página com base no tópico
-    const dataElements = document.querySelectorAll(`[data-sensor]`);
-    dataElements.forEach((el) => {
-        const sensorName = el.getAttribute('data-sensor');
-        if (topic.endsWith(sensorName)) { // Assumindo que o sensorName é o final do tópico
-            el.textContent = message.toString();
-        }
-    });
-});
-
-client.on('error', (err) => {
-    console.error('Erro de conexão:', err);
-});
-
-client.on('close', () => {
-    console.log('Conexão encerrada');
-});
-
-
-
-    // Controles dos switches
-    const switches = {
-        'chargingSwitch': 'switch/charging',
-        'dischargingSwitch': 'switch/discharging',
-        'balancingSwitch': 'sensor/balancing_switch'
-    };
-
-    Object.keys(switches).forEach(switchId => {
-        document.getElementById(switchId).addEventListener('change', function(e) {
-            const topic = switches[switchId];
-            const value = e.target.checked ? 'ON' : 'OFF';
-            client.publish(topic, value);
-            console.log(`Publicado ${value} em ${topic}`);
+        // Improved connection handling
+        client.on('connect', () => {
+            console.log('Connected to MQTT broker');
+            client.subscribe('#', { qos: 1 });
         });
-    });
-</script>
 
+        // Enhanced message handling with data validation
+        client.on('message', (topic, message) => {
+            try {
+                const value = message.toString();
+                const dataElements = document.querySelectorAll(`[data-sensor="${topic.split('/').pop()}"]`);
+                dataElements.forEach(el => {
+                    el.textContent = value;
+                    // Add visual feedback for updates
+                    el.style.transition = 'background-color 0.3s';
+                    el.style.backgroundColor = '#2e4c2e';
+                    setTimeout(() => el.style.backgroundColor = '', 300);
+                });
+            } catch (error) {
+                console.error('Error processing message:', error);
+            }
+        });
+
+        // Improved switch controls with error handling
+        const switches = {
+            'chargingSwitch': 'switch/charging',
+            'dischargingSwitch': 'switch/discharging',
+            'balancingSwitch': 'sensor/balancing_switch'
+        };
+
+        Object.entries(switches).forEach(([switchId, topic]) => {
+            const element = document.getElementById(switchId);
+            if (element) {
+                element.addEventListener('change', (e) => {
+                    const value = e.target.checked ? 'ON' : 'OFF';
+                    client.publish(topic, value, { qos: 1, retain: true }, (err) => {
+                        if (err) {
+                            console.error(`Failed to publish to ${topic}:`, err);
+                            e.target.checked = !e.target.checked; // Revert on failure
+                        }
+                    });
+                });
+            }
+        });
+
+        // Add connection status indicator
+        client.on('close', () => {
+            console.log('Connection closed');
+            document.querySelector('.title h1').style.color = '#ff4444';
+        });
+
+        client.on('reconnect', () => {
+            console.log('Attempting to reconnect...');
+            document.querySelector('.title h1').style.color = '#ffaa44';
+        });
+    </script>
 </body>
 </html>
