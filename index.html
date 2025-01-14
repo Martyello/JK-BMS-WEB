@@ -287,102 +287,44 @@
     }
 };
 
+// Conectar ao broker MQTT
 const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
 
-    client.on('connect', () => {
-        console.log('Conectado ao broker MQTT!');
-        
-        // Binary sensors
-        client.subscribe('sensor/balancing');
-        client.subscribe('sensor/balancing_switch');
-        client.subscribe('sensor/charging');
-        client.subscribe('sensor/discharging');
-        client.subscribe('sensor/dedicated_charger_switch');
-        client.subscribe('sensor/online_status');
-        
-        // Sensores principais
-        client.subscribe('sensor/total_voltage');
-        client.subscribe('sensor/current');
-        client.subscribe('sensor/power');
-        client.subscribe('sensor/capacity_remaining');
-        client.subscribe('sensor/capacity_remaining_derived');
-        client.subscribe('sensor/charging_cycles');
-        client.subscribe('sensor/total_charging_cycle_capacity');
-        client.subscribe('sensor/total_battery_capacity_setting');
-        
-        // Sensores de células
-        for (let i = 1; i <= 8; i++) {
-            client.subscribe(`sensor/cell_voltage_${i}`);
+client.on('connect', () => {
+    console.log('Conectado ao servidor MQTT');
+    
+    // Inscrever-se nos tópicos necessários
+    client.subscribe('#', (err) => { // Substitua '#' pelos tópicos desejados
+        if (err) {
+            console.error('Erro ao se inscrever nos tópicos:', err);
+        } else {
+            console.log('Inscrito nos tópicos com sucesso');
         }
-        
-        // Sensores de temperatura
-        client.subscribe('sensor/power_tube_temperature');
-        client.subscribe('sensor/temperature_sensor_1');
-        client.subscribe('sensor/temperature_sensor_2');
-        
-        // Sensores de média e delta
-        client.subscribe('sensor/average_cell_voltage');
-        client.subscribe('sensor/delta_cell_voltage');
-        
-        // Text sensors
-        client.subscribe('text_sensor/total_runtime_formatted');
-        client.subscribe('text_sensor/errors');
-        client.subscribe('text_sensor/operation_mode');
     });
-
-    client.on('error', (error) => {
-        console.log('Erro MQTT:', error);
-    });
-
-    client.on('offline', () => {
-        console.log('Cliente MQTT está offline');
-    });
-
-    client.on('reconnect', () => {
-        console.log('Tentando reconectar ao MQTT');
-    });
-
-    client.on('message', (topic, message) => {
-    try {
-        const valor = message.toString();
-        // Remove o prefixo 'sensor/' ou 'text_sensor/' para corresponder aos data-sensor
-        const sensorType = topic.replace('sensor/', '').replace('text_sensor/', '');
-        
-        // Encontra elementos com o data-sensor correspondente
-        const elementos = document.querySelectorAll(`[data-sensor="${sensorType}"]`);
-        
-        if (elementos.length > 0) {
-            elementos.forEach(elemento => {
-                // Adiciona unidades apropriadas baseado no tipo do sensor
-                let displayValue = valor;
-                
-                // Adiciona unidades
-                if (sensorType.includes('voltage')) displayValue += ' V';
-                if (sensorType.includes('current')) displayValue += ' A';
-                if (sensorType.includes('power')) displayValue += ' W';
-                if (sensorType.includes('temperature')) displayValue += ' °C';
-                if (sensorType.includes('capacity') && !sensorType.includes('remaining')) displayValue += ' Ah';
-                if (sensorType === 'capacity_remaining') displayValue += '%';
-                
-                // Atualiza o texto do elemento
-                elemento.textContent = displayValue;
-                
-                // Atualiza estado dos switches
-                if (['charging', 'discharging', 'balancing'].includes(sensorType)) {
-                    const switchElement = document.getElementById(`${sensorType}Switch`);
-                    if (switchElement) {
-                        switchElement.checked = valor === 'ON';
-                    }
-                }
-                
-                console.log(`Atualizado ${sensorType}: ${displayValue}`);
-            });
-        }
-    } catch (erro) {
-        console.log('Mensagem recebida:', topic, message.toString());
-        console.error('Erro ao processar mensagem:', erro);
-    }
 });
+
+// Manipular mensagens recebidas
+client.on('message', (topic, message) => {
+    console.log(`Mensagem recebida no tópico ${topic}: ${message.toString()}`);
+    
+    // Atualizar os elementos da página com base no tópico
+    const dataElements = document.querySelectorAll(`[data-sensor]`);
+    dataElements.forEach((el) => {
+        const sensorName = el.getAttribute('data-sensor');
+        if (topic.endsWith(sensorName)) { // Assumindo que o sensorName é o final do tópico
+            el.textContent = message.toString();
+        }
+    });
+});
+
+client.on('error', (err) => {
+    console.error('Erro de conexão:', err);
+});
+
+client.on('close', () => {
+    console.log('Conexão encerrada');
+});
+
 
 
     // Controles dos switches
