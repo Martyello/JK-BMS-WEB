@@ -267,66 +267,67 @@
     <script>
         const updateInterval = 5000;
 
-        function updateData() {
-            fetch('http://192.168.6.44/states')
-                .then(response => response.json())
-                .then(data => {
-                    // Atualiza os sensores
-                    document.querySelectorAll('[data-sensor]').forEach(element => {
-                        const sensorId = element.getAttribute('data-sensor');
-                        const sensorValue = data[`${sensorId}`];
-                        if (sensorValue) {
-                            element.textContent = sensorValue;
-                        }
-                    });
-
-                    // Atualiza os switches
-                    document.querySelectorAll('[data-switch]').forEach(element => {
-                        const switchId = element.getAttribute('data-switch');
-                        const switchValue = data[`${switchId}`];
-                        if (switchValue) {
-                            element.checked = switchValue === 'ON';
-                        }
-                    });
-
-                    updateCellColors();
-                })
-                .catch(error => console.log('Erro ao atualizar dados:', error));
-        }
-
-        document.querySelectorAll('[data-switch]').forEach(element => {
-            element.addEventListener('change', function() {
-                const switchId = this.getAttribute('data-switch');
-                fetch(`/api/switch/${switchId}/toggle`, {
-                    method: 'POST'
-                });
+function updateData() {
+    fetch('http://martyello.duckdns.org:9595/api/states')
+        .then(response => response.json())
+        .then(data => {
+            // Atualiza os sensores
+            document.querySelectorAll('[data-sensor]').forEach(element => {
+                const sensorId = element.getAttribute('data-sensor');
+                const sensorValue = data[`${sensorId}`];
+                if (sensorValue) {
+                    element.textContent = sensorValue;
+                }
             });
+
+            // Atualiza os switches
+            document.querySelectorAll('[data-switch]').forEach(element => {
+                const switchId = element.getAttribute('data-switch');
+                const switchValue = data[`${switchId}`];
+                if (switchValue) {
+                    element.checked = switchValue === 'ON';
+                }
+            });
+
+            updateCellColors();
+        })
+        .catch(error => console.log('Erro ao atualizar dados:', error));
+}
+
+document.querySelectorAll('[data-switch]').forEach(element => {
+    element.addEventListener('change', function() {
+        const switchId = this.getAttribute('data-switch');
+        fetch(`http://martyello.duckdns.org:9595/api/switch/${switchId}/toggle`, {
+            method: 'POST'
         });
+    });
+});
 
-        function updateCellColors() {
-            const cells = document.querySelectorAll('.cell span[data-sensor^="cell_voltage_"]');
-            let voltages = [];
-            
-            cells.forEach(cell => {
-                const voltage = parseFloat(cell.textContent);
-                voltages.push({
-                    element: cell,
-                    voltage: voltage
-                });
-            });
+function updateCellColors() {
+    const cells = document.querySelectorAll('.cell span[data-sensor^="cell_voltage_"]');
+    let voltages = [];
+    
+    cells.forEach(cell => {
+        const voltage = parseFloat(cell.textContent);
+        voltages.push({
+            element: cell,
+            voltage: voltage
+        });
+    });
 
-            voltages.sort((a, b) => a.voltage - b.voltage);
+    voltages.sort((a, b) => a.voltage - b.voltage);
 
-            cells.forEach(cell => {
-                cell.className = 'highlight';
-            });
+    cells.forEach(cell => {
+        cell.className = 'highlight';
+    });
 
-            voltages[0].element.className = 'lowest';
-            voltages[voltages.length - 1].element.className = 'highest';
-        }
+    voltages[0].element.className = 'lowest';
+    voltages[voltages.length - 1].element.className = 'highest';
+}
 
-        setInterval(updateData, updateInterval);
-        updateData();
+setInterval(updateData, updateInterval);
+updateData();
+
     </script>
 </body>
 </html>
