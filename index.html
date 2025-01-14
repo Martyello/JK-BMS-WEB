@@ -306,9 +306,9 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
 
         // Status dos switches
-        'jk-bms-esp32/switch/jk-bms-esp32_charging/state': 'charging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_discharging/state': 'discharging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_balancing/state': 'balancing_switch_status'
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_charging/state': 'charging_switch_status',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_discharging/state': 'discharging_switch_status',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing/state': 'balancing_switch_status'
     };
 
     let cellVoltages = new Array(8).fill(0);
@@ -360,12 +360,15 @@
         // Atualizar estado dos switches
         if (topic.includes('charging/state')) {
             document.getElementById('chargingSwitch').checked = valor === 'ON';
+            document.querySelector('[data-sensor="charging"]').textContent = valor;
         }
         if (topic.includes('discharging/state')) {
             document.getElementById('dischargingSwitch').checked = valor === 'ON';
+            document.querySelector('[data-sensor="discharging"]').textContent = valor;
         }
         if (topic.includes('balancing/state')) {
             document.getElementById('balancingSwitch').checked = valor === 'ON';
+            document.querySelector('[data-sensor="balancing"]').textContent = valor;
         }
 
         // Atualizar sensores
@@ -401,9 +404,9 @@
 
     // Configuração atualizada dos switches
     const switches = {
-        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_charging/command',
-        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_discharging/command',
-        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balancing/command'
+        'chargingSwitch': 'jk-bms-esp32/binary_sensor/jk-bms-esp32_charging/command',
+        'dischargingSwitch': 'jk-bms-esp32/binary_sensor/jk-bms-esp32_discharging/command',
+        'balancingSwitch': 'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing/command'
     };
 
     Object.entries(switches).forEach(([switchId, topic]) => {
