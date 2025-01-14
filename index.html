@@ -306,9 +306,9 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
 
         // Status dos switches
-        'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging_switch_status',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing_switch_status'
+        'jk-bms-esp32/switch/jk-bms-esp32_carregamento/state': 'charging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/state': 'discharging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_balanceamento/state': 'balancing_switch_status'
     };
 
     let cellVoltages = new Array(8).fill(0);
@@ -358,10 +358,10 @@
         console.log(`Tópico: ${topic}, Valor: ${valor}`);
 
         // Atualizar estado dos switches
-        if (topic.includes('carregando/state')) {
+        if (topic.includes('carregamento/state')) {
             document.getElementById('chargingSwitch').checked = valor === 'ON';
         }
-        if (topic.includes('descarregando/state')) {
+        if (topic.includes('descarregamento/state')) {
             document.getElementById('dischargingSwitch').checked = valor === 'ON';
         }
         if (topic.includes('balanceamento/state')) {
@@ -375,7 +375,6 @@
             elementos.forEach(elemento => {
                 let valorFormatado = valor;
                 
-                // Adicionar unidades apropriadas
                 if (dataSensor.includes('voltage')) {
                     valorFormatado += ' V';
                     if (dataSensor.includes('cell_voltage_')) {
@@ -393,7 +392,6 @@
 
                 elemento.textContent = valorFormatado;
                 
-                // Efeito visual de atualização
                 elemento.style.transition = 'background-color 0.3s';
                 elemento.style.backgroundColor = '#2e4c2e';
                 setTimeout(() => elemento.style.backgroundColor = '', 300);
@@ -401,29 +399,30 @@
         }
     });
 
-    // Configuração dos switches
+    // Configuração atualizada dos switches
     const switches = {
-        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregando/command',
-        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/command',
-        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/command'
+        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command',
+        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command',
+        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balanceamento/command'
     };
 
     Object.entries(switches).forEach(([switchId, topic]) => {
         const elemento = document.getElementById(switchId);
         if (elemento) {
             elemento.addEventListener('change', (e) => {
-                const valor = e.target.checked ? 'ON' : 'OFF';
+                const valor = e.target.checked ? 'TURN_ON' : 'TURN_OFF';
                 client.publish(topic, valor, { qos: 1, retain: true }, (err) => {
                     if (err) {
                         console.error(`Falha ao publicar em ${topic}:`, err);
                         e.target.checked = !e.target.checked;
+                    } else {
+                        console.log(`Comando ${valor} enviado para ${topic}`);
                     }
                 });
             });
         }
     });
 
-    // Indicadores de status da conexão
     client.on('close', () => {
         console.log('Conexão fechada');
         document.querySelector('.title h1').style.color = '#ff4444';
