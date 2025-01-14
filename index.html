@@ -291,21 +291,30 @@
         });
 
         // Enhanced message handling with data validation
-        client.on('message', (topic, message) => {
-            try {
-                const value = message.toString();
-                const dataElements = document.querySelectorAll(`[data-sensor="${topic.split('/').pop()}"]`);
-                dataElements.forEach(el => {
-                    el.textContent = value;
-                    // Add visual feedback for updates
-                    el.style.transition = 'background-color 0.3s';
-                    el.style.backgroundColor = '#2e4c2e';
-                    setTimeout(() => el.style.backgroundColor = '', 300);
-                });
-            } catch (error) {
-                console.error('Error processing message:', error);
+        // Configuração do MQTT permanece igual
+    
+    client.on('connect', () => {
+        console.log('Conectado ao broker MQTT');
+        client.subscribe('#', { qos: 1 }, (err) => {
+            if (!err) {
+                console.log('Inscrito em todos os tópicos');
             }
         });
+    });
+
+    // Adiciona logs para ver as mensagens chegando
+    client.on('message', (topic, message) => {
+        console.log(`Tópico recebido: ${topic}`);
+        console.log(`Mensagem recebida: ${message.toString()}`);
+        
+        const sensorName = topic.split('/').pop();
+        const elementos = document.querySelectorAll(`[data-sensor="${sensorName}"]`);
+        
+        elementos.forEach(elemento => {
+            elemento.textContent = message.toString();
+            console.log(`Atualizando ${sensorName} com valor ${message.toString()}`);
+        });
+    });
 
         // Improved switch controls with error handling
         const switches = {
@@ -339,6 +348,7 @@
             console.log('Attempting to reconnect...');
             document.querySelector('.title h1').style.color = '#ffaa44';
         });
+        
     </script>
 </body>
 </html>
