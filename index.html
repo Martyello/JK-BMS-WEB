@@ -268,9 +268,9 @@
     <script>
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state': 'charging',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_descarregamento/state': 'discharging',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_charging/state': 'charging',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_discharging/state': 'discharging',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing/state': 'balancing',
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_total/state': 'total_voltage',
         'jk-bms-esp32/sensor/jk-bms-esp32_consumo/state': 'power',
         'jk-bms-esp32/sensor/jk-bms-esp32_total_battery_capacity_setting/state': 'total_battery_capacity_setting',
@@ -306,9 +306,9 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
 
         // Status dos switches
-        'jk-bms-esp32/switch/jk-bms-esp32_carregamento/state': 'charging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/state': 'discharging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_balanceamento/state': 'balancing_switch_status'
+        'jk-bms-esp32/switch/jk-bms-esp32_charging/state': 'charging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_discharging/state': 'discharging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_balancing/state': 'balancing_switch_status'
     };
 
     let cellVoltages = new Array(8).fill(0);
@@ -321,11 +321,11 @@
             const cellElement = document.querySelector(`.cell:nth-child(${i})`);
             if (cellElement) {
                 if (cellVoltages[i-1] === maxVoltage) {
-                    cellElement.style.color = '#0088ff'; // Azul para maior tensão
+                    cellElement.style.color = '#0088ff';
                 } else if (cellVoltages[i-1] === minVoltage) {
-                    cellElement.style.color = '#ff0000'; // Vermelho para menor tensão
+                    cellElement.style.color = '#ff0000';
                 } else {
-                    cellElement.style.color = '#00ff00'; // Verde (highlight) para as demais
+                    cellElement.style.color = '#00ff00';
                 }
             }
         }
@@ -358,13 +358,13 @@
         console.log(`Tópico: ${topic}, Valor: ${valor}`);
 
         // Atualizar estado dos switches
-        if (topic.includes('carregamento/state')) {
+        if (topic.includes('charging/state')) {
             document.getElementById('chargingSwitch').checked = valor === 'ON';
         }
-        if (topic.includes('descarregamento/state')) {
+        if (topic.includes('discharging/state')) {
             document.getElementById('dischargingSwitch').checked = valor === 'ON';
         }
-        if (topic.includes('balanceamento/state')) {
+        if (topic.includes('balancing/state')) {
             document.getElementById('balancingSwitch').checked = valor === 'ON';
         }
 
@@ -401,16 +401,16 @@
 
     // Configuração atualizada dos switches
     const switches = {
-        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command',
-        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command',
-        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balanceamento/command'
+        'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_charging/command',
+        'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_discharging/command',
+        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balancing/command'
     };
 
     Object.entries(switches).forEach(([switchId, topic]) => {
         const elemento = document.getElementById(switchId);
         if (elemento) {
             elemento.addEventListener('change', (e) => {
-                const valor = e.target.checked ? 'TURN_ON' : 'TURN_OFF';
+                const valor = e.target.checked ? 'ON' : 'OFF';
                 client.publish(topic, valor, { qos: 1, retain: true }, (err) => {
                     if (err) {
                         console.error(`Falha ao publicar em ${topic}:`, err);
