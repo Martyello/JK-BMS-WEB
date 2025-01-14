@@ -270,39 +270,27 @@
     </div>
 
     <script>
-        // MQTT Setup
+        // Função para conectar-se ao MQTT
         const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
-            clientId: 'web_client_' + Math.random().toString(16).substr(2, 8),
-            username: 'gitweb', // use your MQTT username here
-            password: 'P@h010407852', // use your MQTT password here
-            clean: true
+            clientId: 'mqtt_dashboard',
+            username: 'gitweb',
+            password: 'P@h010407852'
         });
 
-        client.on('connect', function () {
-            console.log('Connected to MQTT broker');
-            client.subscribe('battery/status', function (err) {
-                if (!err) {
-                    console.log('Subscribed to battery/status topic');
-                }
-            });
+        client.on('connect', () => {
+            console.log('Conectado ao broker MQTT!');
+            // Assinando tópicos
+            client.subscribe('sensor/+/status');
+            client.subscribe('sensor/+/voltage');
+            client.subscribe('sensor/+/capacity');
         });
 
-        client.on('message', function (topic, message) {
-            console.log('Received message:', message.toString());
-            const data = JSON.parse(message.toString());
+        client.on('message', (topic, message) => {
+            // Atualizando o DOM com os valores recebidos
+            const sensor = topic.split('/')[1];
+            const value = message.toString();
 
-            // Update the dashboard elements with the received data
-            document.querySelector('[data-sensor="total_voltage"]').textContent = `${data.total_voltage} V`;
-            document.querySelector('[data-sensor="total_runtime_formatted"]').textContent = data.total_runtime_formatted;
-            document.querySelector('[data-sensor="charging"]').textContent = data.charging ? "ON" : "OFF";
-            document.querySelector('[data-sensor="discharging"]').textContent = data.discharging ? "ON" : "OFF";
-            document.querySelector('[data-sensor="balancing"]').textContent = data.balancing ? "ON" : "OFF";
-            document.querySelector('[data-sensor="power"]').textContent = `${data.power} W`;
-            document.querySelector('[data-sensor="total_battery_capacity_setting"]').textContent = `${data.total_battery_capacity_setting} Ah`;
-            document.querySelector('[data-sensor="total_charging_cycle_capacity"]').textContent = `${data.total_charging_cycle_capacity} Ah`;
-            document.querySelector('[data-sensor="average_cell_voltage"]').textContent = `${data.average_cell_voltage} V`;
-            document.querySelector('[data-sensor="current"]').textContent = `${data.current} A`;
-            document.querySelector('[data-sensor="temperature_sensor_1"]').textContent = `${data.temperature_sensor_1} °C`;
+            document.querySelector(`[data-sensor="${sensor}_status"]`).textContent = value;
         });
     </script>
 </body>
