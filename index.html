@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' broker.hivemq.com:8884; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; connect-src 'self' wss://broker.hivemq.com:8884">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; connect-src 'self' wss://3c923e74c20d465eb92533d999b9b67b.s2.eu.hivemq.cloud:8884">
     <title>JKBMS WEB ESP32</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
     <style>
@@ -267,10 +267,13 @@
 
     <script>
         const mqttConfig = {
-    host: 'broker.hivemq.com',
+    host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
     port: 8884,
     protocol: 'wss',
-    path: '/mqtt'
+    path: '/mqtt',
+    username: 'martyello',
+    password: 'P@h010407852',
+    clientId: 'jkbms_web_' + Math.random().toString(16).substr(2, 8)
 };
 
 const client = mqtt.connect(mqttConfig);
