@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://192.168.6.44; script-src 'self' 'unsafe-inline'">
     <title>JKBMS WEB ESP8266</title>
     <style>
         body {
@@ -267,26 +268,32 @@
         const updateInterval = 5000;
 
         function updateData() {
-            fetch('http://martyello.duckdns.org:9595/api/states')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelectorAll('[data-sensor]').forEach(element => {
-                        const sensorId = element.getAttribute('data-sensor');
-                        if (data[sensorId]) {
-                            element.textContent = data[sensorId].state;
-                        }
-                    });
+    fetch('http://192.168.6.44/states')
+        .then(response => response.json())
+        .then(data => {
+            // Atualiza os sensores
+            document.querySelectorAll('[data-sensor]').forEach(element => {
+                const sensorId = element.getAttribute('data-sensor');
+                const sensorValue = data[`${sensorId}`];
+                if (sensorValue) {
+                    element.textContent = sensorValue;
+                }
+            });
 
-                    document.querySelectorAll('[data-switch]').forEach(element => {
-                        const switchId = element.getAttribute('data-switch');
-                        if (data[switchId]) {
-                            element.checked = data[switchId].state;
-                        }
-                    });
+            // Atualiza os switches
+            document.querySelectorAll('[data-switch]').forEach(element => {
+                const switchId = element.getAttribute('data-switch');
+                const switchValue = data[`${switchId}`];
+                if (switchValue) {
+                    element.checked = switchValue === 'ON';
+                }
+            });
 
-                    updateCellColors();
-                });
-        }
+            updateCellColors();
+        })
+        .catch(error => console.log('Erro ao atualizar dados:', error));
+}
+
 
         document.querySelectorAll('[data-switch]').forEach(element => {
             element.addEventListener('change', function() {
