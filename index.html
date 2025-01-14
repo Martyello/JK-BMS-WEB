@@ -294,12 +294,42 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_6/state': 'cell_voltage_6',
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_7/state': 'cell_voltage_7',
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_8/state': 'cell_voltage_8',
-        
+
+        // Resistências das células
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_1/state': 'cell_resistance_1',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_2/state': 'cell_resistance_2',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_3/state': 'cell_resistance_3',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_4/state': 'cell_resistance_4',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_5/state': 'cell_resistance_5',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_6/state': 'cell_resistance_6',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_7/state': 'cell_resistance_7',
+        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
+
         // Status dos switches
         'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging_switch_status',
         'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging_switch_status',
         'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing_switch_status'
     };
+
+    let cellVoltages = new Array(8).fill(0);
+
+    function updateCellColors() {
+        const maxVoltage = Math.max(...cellVoltages);
+        const minVoltage = Math.min(...cellVoltages);
+        
+        for (let i = 1; i <= 8; i++) {
+            const cellElement = document.querySelector(`.cell:nth-child(${i})`);
+            if (cellElement) {
+                if (cellVoltages[i-1] === maxVoltage) {
+                    cellElement.style.color = '#0088ff'; // Azul para maior tensão
+                } else if (cellVoltages[i-1] === minVoltage) {
+                    cellElement.style.color = '#ff0000'; // Vermelho para menor tensão
+                } else {
+                    cellElement.style.color = '#00ff00'; // Verde (highlight) para as demais
+                }
+            }
+        }
+    }
 
     const mqttConfig = {
         host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
@@ -346,7 +376,14 @@
                 let valorFormatado = valor;
                 
                 // Adicionar unidades apropriadas
-                if (dataSensor.includes('voltage')) valorFormatado += ' V';
+                if (dataSensor.includes('voltage')) {
+                    valorFormatado += ' V';
+                    if (dataSensor.includes('cell_voltage_')) {
+                        const cellIndex = parseInt(dataSensor.split('_').pop()) - 1;
+                        cellVoltages[cellIndex] = parseFloat(valor);
+                        updateCellColors();
+                    }
+                }
                 if (dataSensor.includes('current')) valorFormatado += ' A';
                 if (dataSensor.includes('power')) valorFormatado += ' W';
                 if (dataSensor.includes('temperature')) valorFormatado += ' °C';
