@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
     <title>JKBMS WEB ESP32</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
     <style>
@@ -268,17 +268,26 @@
     // Substitua apenas a parte do script, mantendo todo o resto do HTML igual
 
 <script>
-    const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
-    clientId: 'mqtt_dashboard_' + Math.random().toString(16).substr(2, 8),
+    const mqttConfig = {
+    host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
+    port: 8884,
+    clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
     username: 'gitweb',
     password: 'P@h010407852',
     protocol: 'wss',
-    rejectUnauthorized: false,
-    keepalive: 60,
+    protocolVersion: 4,
     clean: true,
     reconnectPeriod: 1000,
-    connectTimeout: 30 * 1000
-});
+    connectTimeout: 30 * 1000,
+    will: {
+        topic: 'WillMsg',
+        payload: 'Connection Closed abnormally..!',
+        qos: 0,
+        retain: false
+    }
+};
+
+const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
 
     client.on('connect', () => {
         console.log('Conectado ao broker MQTT!');
