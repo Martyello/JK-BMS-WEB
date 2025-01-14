@@ -269,41 +269,103 @@
         </div>
     </div>
 
-    <script>
-        // MQTT Setup
-        const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
-            clientId: 'web_client_' + Math.random().toString(16).substr(2, 8),
-            username: 'gitweb', // use your MQTT username here
-            password: 'P@h010407852', // use your MQTT password here
-            clean: true
-        });
+    // Substitua apenas a parte do script, mantendo todo o resto do HTML igual
 
-        client.on('connect', function () {
-            console.log('Connected to MQTT broker');
-            client.subscribe('battery/status', function (err) {
-                if (!err) {
-                    console.log('Subscribed to battery/status topic');
-                }
-            });
-        });
+<script>
+    const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
+        clientId: 'mqtt_dashboard_' + Math.random().toString(16).substr(2, 8),
+        username: 'gitweb',
+        password: 'P@h010407852',
+        protocol: 'wss',
+        rejectUnauthorized: false
+    });
 
-        client.on('message', function (topic, message) {
-            console.log('Received message:', message.toString());
-            const data = JSON.parse(message.toString());
+    client.on('connect', () => {
+        console.log('Conectado ao broker MQTT!');
+        
+        // Binary sensors
+        client.subscribe('sensor/balancing');
+        client.subscribe('sensor/balancing_switch');
+        client.subscribe('sensor/charging');
+        client.subscribe('sensor/discharging');
+        client.subscribe('sensor/dedicated_charger_switch');
+        client.subscribe('sensor/online_status');
+        
+        // Sensores principais
+        client.subscribe('sensor/total_voltage');
+        client.subscribe('sensor/current');
+        client.subscribe('sensor/power');
+        client.subscribe('sensor/capacity_remaining');
+        client.subscribe('sensor/capacity_remaining_derived');
+        client.subscribe('sensor/charging_cycles');
+        client.subscribe('sensor/total_charging_cycle_capacity');
+        client.subscribe('sensor/total_battery_capacity_setting');
+        
+        // Sensores de células
+        for (let i = 1; i <= 8; i++) {
+            client.subscribe(`sensor/cell_voltage_${i}`);
+        }
+        
+        // Sensores de temperatura
+        client.subscribe('sensor/power_tube_temperature');
+        client.subscribe('sensor/temperature_sensor_1');
+        client.subscribe('sensor/temperature_sensor_2');
+        
+        // Sensores de média e delta
+        client.subscribe('sensor/average_cell_voltage');
+        client.subscribe('sensor/delta_cell_voltage');
+        
+        // Text sensors
+        client.subscribe('text_sensor/total_runtime_formatted');
+        client.subscribe('text_sensor/errors');
+        client.subscribe('text_sensor/operation_mode');
+    });
 
-            // Update the dashboard elements with the received data
-            document.querySelector('[data-sensor="total_voltage"]').textContent = `${data.total_voltage} V`;
-            document.querySelector('[data-sensor="total_runtime_formatted"]').textContent = data.total_runtime_formatted;
-            document.querySelector('[data-sensor="charging"]').textContent = data.charging ? "ON" : "OFF";
-            document.querySelector('[data-sensor="discharging"]').textContent = data.discharging ? "ON" : "OFF";
-            document.querySelector('[data-sensor="balancing"]').textContent = data.balancing ? "ON" : "OFF";
-            document.querySelector('[data-sensor="power"]').textContent = `${data.power} W`;
-            document.querySelector('[data-sensor="total_battery_capacity_setting"]').textContent = `${data.total_battery_capacity_setting} Ah`;
-            document.querySelector('[data-sensor="total_charging_cycle_capacity"]').textContent = `${data.total_charging_cycle_capacity} Ah`;
-            document.querySelector('[data-sensor="average_cell_voltage"]').textContent = `${data.average_cell_voltage} V`;
-            document.querySelector('[data-sensor="current"]').textContent = `${data.current} A`;
-            document.querySelector('[data-sensor="temperature_sensor_1"]').textContent = `${data.temperature_sensor_1} °C`;
+    client.on('error', (error) => {
+        console.log('Erro MQTT:', error);
+    });
+
+    client.on('offline', () => {
+        console.log('Cliente MQTT está offline');
+    });
+
+    client.on('reconnect', () => {
+        console.log('Tentando reconectar ao MQTT');
+    });
+
+    client.on('message', (topic, message) => {
+        try {
+            const valor = message.toString();
+            const sensorType = topic.split('/')[1];
+            
+            const elementos = document.querySelectorAll(`[data-sensor="${sensorType}"]`);
+            if (elementos.length > 0) {
+                elementos.forEach(elemento => {
+                    elemento.textContent = valor;
+                    console.log(`Atualizado ${sensorType}: ${valor}`);
+                });
+            }
+        } catch (erro) {
+            console.error('Erro ao processar mensagem:', erro);
+        }
+    });
+
+    // Controles dos switches
+    const switches = {
+        'chargingSwitch': 'switch/charging',
+        'dischargingSwitch': 'switch/discharging',
+        'balancingSwitch': 'sensor/balancing_switch'
+    };
+
+    Object.keys(switches).forEach(switchId => {
+        document.getElementById(switchId).addEventListener('change', function(e) {
+            const topic = switches[switchId];
+            const value = e.target.checked ? 'ON' : 'OFF';
+            client.publish(topic, value);
+            console.log(`Publicado ${value} em ${topic}`);
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
