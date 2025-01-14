@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://192.168.6.44; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
+    <title>JKBMS WEB ESP32</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -188,7 +190,7 @@
 <body>
     <div class="dashboard">
         <div class="title">
-            <h1>JKBMS WEB ESP32</h1>
+            <h1>JKBMS WEB ESP82</h1>
         </div>
 
         <div class="header">
@@ -266,25 +268,30 @@
         const updateInterval = 5000;
 
         function updateData() {
-            fetch('http://martyello.duckdns.org:9595/api/states')
+            fetch('http://192.168.6.44/states')
                 .then(response => response.json())
                 .then(data => {
+                    // Atualiza os sensores
                     document.querySelectorAll('[data-sensor]').forEach(element => {
                         const sensorId = element.getAttribute('data-sensor');
-                        if (data[sensorId]) {
-                            element.textContent = data[sensorId].state;
+                        const sensorValue = data[`${sensorId}`];
+                        if (sensorValue) {
+                            element.textContent = sensorValue;
                         }
                     });
 
+                    // Atualiza os switches
                     document.querySelectorAll('[data-switch]').forEach(element => {
                         const switchId = element.getAttribute('data-switch');
-                        if (data[switchId]) {
-                            element.checked = data[switchId].state;
+                        const switchValue = data[`${switchId}`];
+                        if (switchValue) {
+                            element.checked = switchValue === 'ON';
                         }
                     });
 
                     updateCellColors();
-                });
+                })
+                .catch(error => console.log('Erro ao atualizar dados:', error));
         }
 
         document.querySelectorAll('[data-switch]').forEach(element => {
@@ -323,3 +330,4 @@
     </script>
 </body>
 </html>
+
