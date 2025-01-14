@@ -265,6 +265,7 @@
             </div>
         </div>
     </div>    
+    <center>Status Esp32:<span data-sensor="statusesp32"></span></center>
     <script>
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
@@ -309,6 +310,8 @@
         'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging_switch_status',
         'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging_switch_status',
         'jk-bms-esp32/switch/jk-bms-esp32_balanceando/state': 'balancing_switch_status',
+        // Status do Esp32
+        'jk-bms-esp32/status': 'balancing_switch_status': 'statusesp32',
     };
 
     let cellVoltages = new Array(8).fill(0);
