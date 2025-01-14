@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
-    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
-    connect-src 'self' wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'">
     <title>JKBMS WEB ESP32</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
     <style>
@@ -273,12 +269,16 @@
 
 <script>
     const client = mqtt.connect('wss://3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud:8884', {
-        clientId: 'mqtt_dashboard_' + Math.random().toString(16).substr(2, 8),
-        username: 'gitweb',
-        password: 'P@h010407852',
-        protocol: 'wss',
-        rejectUnauthorized: false
-    });
+    clientId: 'mqtt_dashboard_' + Math.random().toString(16).substr(2, 8),
+    username: 'gitweb',
+    password: 'P@h010407852',
+    protocol: 'wss',
+    rejectUnauthorized: false,
+    keepalive: 60,
+    clean: true,
+    reconnectPeriod: 1000,
+    connectTimeout: 30 * 1000
+});
 
     client.on('connect', () => {
         console.log('Conectado ao broker MQTT!');
