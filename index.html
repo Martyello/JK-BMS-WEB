@@ -358,21 +358,21 @@
 
     client.on('message', (topic, message) => {
         const valor = message.toString();
-        console.log(`Tópico: ${topic}, Valor: ${valor}`);
+    
+           // Verificação exata dos tópicos
+           if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_carregamento/state') {
+           document.getElementById('chargingSwitch').checked = valor === 'ON';
+           document.querySelector('[data-sensor="charging"]').textContent = valor;
+       }
+           if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/state') {
+           document.getElementById('dischargingSwitch').checked = valor === 'ON';
+           document.querySelector('[data-sensor="discharging"]').textContent = valor;
+       }
+           if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/state') {
+           document.getElementById('balancingSwitch').checked = valor === 'ON';
+           document.querySelector('[data-sensor="balancing"]').textContent = valor;
+       }
 
-        // Atualizar estado dos switches
-        if (topic.includes('charging/state')) {
-            document.getElementById('chargingSwitch').checked = valor === 'ON';
-            document.querySelector('[data-sensor="charging"]').textContent = valor;
-        }
-        if (topic.includes('discharging/state')) {
-            document.getElementById('dischargingSwitch').checked = valor === 'ON';
-            document.querySelector('[data-sensor="discharging"]').textContent = valor;
-        }
-        if (topic.includes('balancing/state')) {
-            document.getElementById('balancingSwitch').checked = valor === 'ON';
-            document.querySelector('[data-sensor="balancing"]').textContent = valor;
-        }
 
         // Atualizar sensores
         const dataSensor = topicoParaDataSensor[topic];
@@ -409,7 +409,7 @@
     const switches = {
         'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command',
         'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command',
-        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_contruir/command'
+        'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/command'
     };
 
     Object.entries(switches).forEach(([switchId, topic]) => {
