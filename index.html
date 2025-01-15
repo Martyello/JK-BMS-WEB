@@ -170,33 +170,40 @@ input:checked + .slider:before {
         }
 
         @media screen and (max-width: 768px) {
-            .dashboard {
-                width: 90%;
-                padding: 15px;
-                margin: 15px;
-            }
+    .dashboard {
+        width: 90%;
+        padding: 10px; /* Menos padding */
+        margin: 10px; /* Menos margin */
+    }
 
-            .status div {
-                padding: 8px;
-                font-size: 14px;
-            }
-        }
+    .status div {
+        padding: 6px; /* Menos padding */
+        font-size: 12px; /* Menor tamanho de fonte */
+    }
 
-        @media screen and (max-width: 480px) {
-            .dashboard {
-                width: 95%;
-                padding: 10px;
-                margin: 10px;
-            }
+    .main-stats {
+        gap: 5px; /* Menor gap entre os boxes */
+    }
+}
 
-            .main-stats {
-                flex-direction: column;
-            }
+@media screen and (max-width: 480px) {
+    .dashboard {
+        width: 95%;
+        padding: 8px; /* Menos padding */
+        margin: 8px; /* Menos margin */
+    }
 
-            .controls {
-                flex-wrap: wrap;
-            }
-        }
+    .main-stats {
+        flex-direction: column;
+        gap: 5px; /* Menor gap entre os boxes */
+    }
+
+    .controls {
+        flex-wrap: wrap;
+        gap: 5px; /* Menor gap entre os controles */
+    }
+}
+
     </style>
 </head>
 <body>
