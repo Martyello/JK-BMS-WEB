@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
-    <title>JKBMS WEB ESP32</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
-    <style>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
+					<title>JKBMS WEB ESP32</title>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"/>
+					<style>
         body {
             font-family: Arial, sans-serif;
             background-color: #181818;
@@ -205,187 +205,105 @@ input:checked + .slider:before {
 }
 
     </style>
-</head>
-<body>
-    <body>
-    <div class="dashboard">
-        <div class="title">
-            <h1>JKBMS WEB ESP32</h1>
-        </div>
-
-        <div class="header">
-            <p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span>   
-                  Status ESP32:<span data-sensor="statusesp32"></span></p>
-        </div>
-
-        <div class="status">
-            <div>Charge: <span data-sensor="charging" class="highlight">OFF</span></div>
-            <div>Discharge: <span data-sensor="discharging" class="highlight">OFF</span></div>
-            <div>Balance: <span data-sensor="balancing" class="highlight">OFF</span></div>
-        </div>
-
-        <div class="main-stats">
-            <div class="box">
-                <center>
-                    <h1><span data-sensor="total_voltage" class="highlight">0.00 V</span></h1>
-                    <p>Power Draw: <span data-sensor="power" class="highlight">0 W</span></p>
-                    <p>Total Capacity: <span data-sensor="total_battery_capacity_setting" class="highlight">0 Ah</span></p>
-                    <p>Cycle Capacity: <span data-sensor="total_charging_cycle_capacity" class="highlight">0 Ah</span></p>
-                    <p>Avg Cell V: <span data-sensor="average_cell_voltage" class="highlight">0.000 V</span></p>
-                    <p>Balance Curr: <span data-sensor="current" class="highlight">0.00 A</span></p>
-                    <p>Battery T1: <span data-sensor="temperature_sensor_1" class="highlight">0.0 °C</span></p>
-                </center>
-            </div>
-            <div class="box">
-                <center>
-                    <h1><span data-sensor="current" class="highlight">0.00 A</span></h1>
-                    <p>Remaining: <span data-sensor="capacity_remaining" class="highlight">0%</span></p>
-                    <p>Rem. Capacity: <span data-sensor="capacity_remaining_derived" class="highlight">0.000 Ah</span></p>
-                    <p>Cycle Count: <span data-sensor="charging_cycles" class="highlight">0</span></p>
-                    <p>Delta Cell V: <span data-sensor="delta_cell_voltage" class="highlight">0.000 V</span></p>
-                    <p>MOS Temp.: <span data-sensor="power_tube_temperature" class="highlight">0.0 °C</span></p>
-                    <p>Battery T2: <span data-sensor="temperature_sensor_2" class="highlight">0.0 °C</span></p>
-                </center>
-            </div>
-        </div>
-       <center class="highlight">Cells</center>
-        
-
-        <div class="cells">
+				</head>
+				<body>
+					<body>
+						<div class="dashboard">
+							<div class="title">
+								<h1>JKBMS WEB ESP32</h1>
+							</div>
+							<div class="header">
+								<p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span>   
+                  Status ESP32:<span data-sensor="statusesp32"/>
+								</p>
+							</div>
+							<div class="status">
+								<div>Charge: <span data-sensor="charging" class="highlight">OFF</span>
+								</div>
+								<div>Discharge: <span data-sensor="discharging" class="highlight">OFF</span>
+								</div>
+								<div>Balance: <span data-sensor="balancing" class="highlight">OFF</span>
+								</div>
+							</div>
+							<div class="main-stats">
+								<div class="box">
+									<center>
+										<h1>
+											<span data-sensor="total_voltage" class="highlight">0.00 V</span>
+										</h1>
+										<p>Power Draw: <span data-sensor="power" class="highlight">0 W</span>
+										</p>
+										<p>Total Capacity: <span data-sensor="total_battery_capacity_setting" class="highlight">0 Ah</span>
+										</p>
+										<p>Cycle Capacity: <span data-sensor="total_charging_cycle_capacity" class="highlight">0 Ah</span>
+										</p>
+										<p>Avg Cell V: <span data-sensor="average_cell_voltage" class="highlight">0.000 V</span>
+										</p>
+										<p>Balance Curr: <span data-sensor="current" class="highlight">0.00 A</span>
+										</p>
+										<p>Battery T1: <span data-sensor="temperature_sensor_1" class="highlight">0.0 °C</span>
+										</p>
+									</center>
+								</div>
+								<div class="box">
+									<center>
+										<h1>
+											<span data-sensor="current" class="highlight">0.00 A</span>
+										</h1>
+										<p>Remaining: <span data-sensor="capacity_remaining" class="highlight">0%</span>
+										</p>
+										<p>Rem. Capacity: <span data-sensor="capacity_remaining_derived" class="highlight">0.000 Ah</span>
+										</p>
+										<p>Cycle Count: <span data-sensor="charging_cycles" class="highlight">0</span>
+										</p>
+										<p>Delta Cell V: <span data-sensor="delta_cell_voltage" class="highlight">0.000 V</span>
+										</p>
+										<p>MOS Temp.: <span data-sensor="power_tube_temperature" class="highlight">0.0 °C</span>
+										</p>
+										<p>Battery T2: <span data-sensor="temperature_sensor_2" class="highlight">0.0 °C</span>
+										</p>
+									</center>
+								</div>
+							</div>
+							<center class="highlight">Cells</center>
+							<div class="cells">
             
         </div>
-
-        <div class="controls">
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="chargingSwitch">
-                    <span class="slider"></span>
-                </label>
-                <div class="control-label">Charging</div>
-            </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="dischargingSwitch">
-                    <span class="slider"></span>
-                </label>
-                <div class="control-label">Discharging</div>
-            </div>
-            <div>
-                <label class="switch">
-                    <input type="checkbox" id="balancingSwitch">
-                    <span class="slider"></span>
-                </label>
-                <div class="control-label">Balancing</div>
-            </div>
-        </div>
-    </div>    
-    <script>
+							<div class="controls">
+								<div>
+									<label class="switch">
+										<input type="checkbox" id="chargingSwitch">
+											<span class="slider"/>
+										</label>
+										<div class="control-label">Charging</div>
+									</div>
+									<div>
+										<label class="switch">
+											<input type="checkbox" id="dischargingSwitch">
+												<span class="slider"/>
+											</label>
+											<div class="control-label">Discharging</div>
+										</div>
+										<div>
+											<label class="switch">
+												<input type="checkbox" id="balancingSwitch">
+													<span class="slider"/>
+												</label>
+												<div class="control-label">Balancing</div>
+											</div>
+										</div>
+									</div>
+									<script>
         function organizeCells(totalCells) {
     const cellsContainer = document.querySelector('.cells');
     cellsContainer.innerHTML = '';
     
-    for (let i = 1; i <= totalCells; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.innerHTML = `<img src="carregando.png"><span style="font-weight: bold; font-size: 1.1em; color: white;">${String(i).padStart(2, '0')}.</span> <span data-sensor="cell_voltage_${i}">0.000 V</span>`;
+    for (let i = 1; i <= totalCells; i++) { const cell=document.createElement('div' ); cell.className='cell' ; cell.style.display='flex' ; cell.style.alignItems='center' ; Centraliza verticalmente cell.style.justifyContent='center' ; Mantém centralização horizontal cell.innerHTML=`<img src="carregando.png">
+											<span style="font-weight: bold; font-size: 1.1em; color: white">${String(i).padStart(2, '0')}</span>
+											<span data-sensor="cell_voltage_${i}">0.000 V</span>`;
         
-        if (i <= totalCells/2) {
-            cell.style.gridRow = i;
-            cell.style.gridColumn = "1";
-        } else {
-            cell.style.gridRow = i - Math.floor(totalCells/2);
-            cell.style.gridColumn = "2";
-        }
-        
-        cellsContainer.appendChild(cell);
-    }
-}
-
-    const topicoParaDataSensor = {
-        'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
-        'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging',
-        'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_total/state': 'total_voltage',
-        'jk-bms-esp32/sensor/jk-bms-esp32_consumo/state': 'power',
-        'jk-bms-esp32/sensor/jk-bms-esp32_total_battery_capacity_setting/state': 'total_battery_capacity_setting',
-        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_total_do_ciclo_de_carregamento/state': 'total_charging_cycle_capacity',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_m__dia_da_c__lula/state': 'average_cell_voltage',
-        'jk-bms-esp32/sensor/jk-bms-esp32_corrente/state': 'current',
-        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_1/state': 'temperature_sensor_1',
-        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante/state': 'capacity_remaining',
-        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante_derivada/state': 'capacity_remaining_derived',
-        'jk-bms-esp32/sensor/jk-bms-esp32_ciclos_de_carregamento/state': 'charging_cycles',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_delta/state': 'delta_cell_voltage',
-        'jk-bms-esp32/sensor/jk-bms-esp32_temperatura_do_tubo_de_pot__ncia/state': 'power_tube_temperature',
-        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_2/state': 'temperature_sensor_2',
-        
-        // Tensões das células
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_1/state': 'cell_voltage_1',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_2/state': 'cell_voltage_2',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_3/state': 'cell_voltage_3',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_4/state': 'cell_voltage_4',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_5/state': 'cell_voltage_5',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_6/state': 'cell_voltage_6',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_7/state': 'cell_voltage_7',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_8/state': 'cell_voltage_8',
-
-        // Resistências das células
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_1/state': 'cell_resistance_1',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_2/state': 'cell_resistance_2',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_3/state': 'cell_resistance_3',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_4/state': 'cell_resistance_4',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_5/state': 'cell_resistance_5',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_6/state': 'cell_resistance_6',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_7/state': 'cell_resistance_7',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
-
-        // Status dos switches
-        'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command': 'charging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command': 'discharging_switch_status',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state': 'balancing_switch_status',
-        // Status do Esp32
-        'jk-bms-esp32/status': 'statusesp32',
-    };
-
-    let cellVoltages = new Array(8).fill(0);
-        organizeCells(8); // Cria 8 células organizadas
-
-    function updateCellColors() {
-        const maxVoltage = Math.max(...cellVoltages);
-        const minVoltage = Math.min(...cellVoltages);
-        
-        for (let i = 1; i <= 8; i++) {
-            const cellElement = document.querySelector(`.cell:nth-child(${i})`);
-            if (cellElement) {
-                if (cellVoltages[i-1] === maxVoltage) {
-                    cellElement.style.color = '#0088ff';
-                } else if (cellVoltages[i-1] === minVoltage) {
-                    cellElement.style.color = '#ff0000';
-                } else {
-                    cellElement.style.color = '#00ff00';
-                }
-            }
-        }
-    }
-        
-    const mqttConfig = {
-        host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
-        port: 8884,
-        clientId: `mqttjs_${Math.random().toString(16).slice(2, 10)}`,
-        username: 'gitweb',
-        password: 'P@h010407852',
-        protocol: 'wss',
-        protocolVersion: 4,
-        clean: true,
-        reconnectPeriod: 2000,
-        connectTimeout: 30000,
-        rejectUnauthorized: true
-    };
-
-    const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig);
-
-    client.on('connect', () => {
+        if (i <= totalCells 2) { cell.style.gridRow=i; cell.style.gridColumn="1" ; } else { cell.style.gridRow=i - Math.floor(totalCells 2); cell.style.gridColumn="2" ; } cellsContainer.appendChild(cell); } } const topicoParaDataSensor={ 'jk-bms-esp32 sensor jk-bms-esp32_tempo_de_execu____o_total_formatado state':'total_runtime_formatted' ,'jk-bms-esp32/switch/jk-bms-esp32_carregando/state' :'charging' ,'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state' :'discharging' ,'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state' :'balancing' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_total/state' :'total_voltage' ,'jk-bms-esp32/sensor/jk-bms-esp32_consumo/state' :'power' ,'jk-bms-esp32/sensor/jk-bms-esp32_total_battery_capacity_setting/state' :'total_battery_capacity_setting' ,'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_total_do_ciclo_de_carregamento/state' :'total_charging_cycle_capacity' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_m__dia_da_c__lula/state' :'average_cell_voltage' ,'jk-bms-esp32/sensor/jk-bms-esp32_corrente/state' :'current' ,'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_1/state' :'temperature_sensor_1' ,'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante/state' :'capacity_remaining' ,'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante_derivada/state' :'capacity_remaining_derived' ,'jk-bms-esp32/sensor/jk-bms-esp32_ciclos_de_carregamento/state' :'charging_cycles' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_delta/state' :'delta_cell_voltage' ,'jk-bms-esp32/sensor/jk-bms-esp32_temperatura_do_tubo_de_pot__ncia/state' :'power_tube_temperature' ,'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_2/state' :'temperature_sensor_2' , Tensões das células'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_1/state' :'cell_voltage_1' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_2/state' :'cell_voltage_2' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_3/state' :'cell_voltage_3' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_4/state' :'cell_voltage_4' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_5/state' :'cell_voltage_5' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_6/state' :'cell_voltage_6' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_7/state' :'cell_voltage_7' ,'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_8/state' :'cell_voltage_8' , Resistências das células'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_1/state' :'cell_resistance_1' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_2/state' :'cell_resistance_2' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_3/state' :'cell_resistance_3' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_4/state' :'cell_resistance_4' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_5/state' :'cell_resistance_5' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_6/state' :'cell_resistance_6' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_7/state' :'cell_resistance_7' ,'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state' :'cell_resistance_8' , Status dos switches'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command' :'charging_switch_status' ,'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command' :'discharging_switch_status' ,'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state' :'balancing_switch_status' , Status do Esp32'jk-bms-esp32/status' :'statusesp32' , }; let cellVoltages=new Array(8).fill(0); organizeCells(8); Cria 8 células organizadas function updateCellColors() { const maxVoltage=Math.max(...cellVoltages); const minVoltage=Math.min(...cellVoltages); for (let i=1; i
+											<= 8; i++) { const cellElement=document.querySelector(`.cell:nth-child(${i})`); if (cellElement) { if (cellVoltages[i-1]===maxVoltage) { cellElement.style.color='#0088ff' ; } else if (cellVoltages[i-1]===minVoltage) { cellElement.style.color='#ff0000' ; } else { cellElement.style.color='#00ff00' ; } } } } const mqttConfig={ host:'3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud' , port: 8884, clientId: `mqttjs_${Math.random().toString(16).slice(2, 10)}`, username:'gitweb' , password:'P@h010407852' , protocol:'wss' , protocolVersion: 4, clean: true, reconnectPeriod: 2000, connectTimeout: 30000, rejectUnauthorized: true }; const client=mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}/mqtt`, mqttConfig); client.on('connect', ()=> {
         console.log('Conectado ao broker MQTT');
         client.subscribe('#', { qos: 1 });
         document.querySelector('.title h1').style.color = '#00ff00';
