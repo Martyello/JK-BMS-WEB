@@ -75,10 +75,12 @@
         }
 
         .cells {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 5px;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Duas colunas de largura igual */
+        gap: 15px;
+        margin-bottom: 5px;
+        }
+
         }
 
         .cell {
@@ -251,7 +253,7 @@ input:checked + .slider:before {
        <center class="highlight">Cells</center>
         
 
-        <div class="cells">
+        <div class="cells" id="cells-container">
             <div class="cell"><img src="carregando.png">01.    <span data-sensor="cell_voltage_1">0.000 V</span></div>
             <div class="cell"><img src="carregando.png">02.    <span data-sensor="cell_voltage_2">0.000 V</span> </div>
             <div class="cell"><img src="carregando.png">03.    <span data-sensor="cell_voltage_3">0.000 V</span> </div>
@@ -287,6 +289,25 @@ input:checked + .slider:before {
         </div>
     </div>    
     <script>
+        const container = document.getElementById('cells-container');
+    const cells = Array.from(container.children);
+    
+    // Calcular o meio
+    const half = Math.ceil(cells.length / 2);
+
+    // Dividir as células em duas colunas
+    const leftColumn = cells.slice(0, half); // Primeira metade vai para a esquerda
+    const rightColumn = cells.slice(half); // Segunda metade vai para a direita
+
+    // Limpar o contêiner
+    container.innerHTML = '';
+
+    // Adicionar as células da coluna da esquerda
+    leftColumn.forEach(cell => container.appendChild(cell));
+
+    // Adicionar as células da coluna da direita
+    rightColumn.forEach(cell => container.appendChild(cell));
+        
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
         'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging',
