@@ -287,9 +287,8 @@ input:checked + .slider:before {
     for (let i = 1; i <= totalCells; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
-        cell.innerHTML = `<img src="carregando.png">${String(i).padStart(2, '0')}. <span data-sensor="cell_voltage_${i}">0.000 V</span>`;
+        cell.innerHTML = `<img src="carregando.png"><span style="font-weight: bold; font-size: 1.1em; color: #007bff;">${String(i).padStart(2, '0')}.</span> <span data-sensor="cell_voltage_${i}">0.000 V</span>`;
         
-        // Organiza as células: primeira metade à esquerda, segunda metade à direita
         if (i <= totalCells/2) {
             cell.style.gridRow = i;
             cell.style.gridColumn = "1";
