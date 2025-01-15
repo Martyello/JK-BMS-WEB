@@ -350,6 +350,7 @@ input:checked + .slider:before {
     };
 
     let cellVoltages = new Array(8).fill(0);
+        organizeCells(8); // Cria 8 células organizadas
 
     function updateCellColors() {
         const maxVoltage = Math.max(...cellVoltages);
@@ -368,9 +369,7 @@ input:checked + .slider:before {
             }
         }
     }
-    let cellVoltages = new Array(8).fill(0);
-organizeCells(8); // Cria 8 células organizadas
-
+        
     const mqttConfig = {
         host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
         port: 8884,
@@ -391,14 +390,8 @@ organizeCells(8); // Cria 8 células organizadas
         console.log('Conectado ao broker MQTT');
         client.subscribe('#', { qos: 1 });
         document.querySelector('.title h1').style.color = '#00ff00';
+        organizeCells(8); // Cria as células após conectar
     });
-
-    client.on('connect', () => {
-    console.log('Conectado ao broker MQTT');
-    client.subscribe('#', { qos: 1 });
-    document.querySelector('.title h1').style.color = '#00ff00';
-    organizeCells(8); // Cria as células após conectar
-});
 
 
     client.on('message', (topic, message) => {
