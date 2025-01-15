@@ -415,6 +415,17 @@ input:checked + .slider:before {
         document.querySelector('[data-sensor="balancing"]').textContent = valor;
     }
 
+    if (topic === 'jk-bms-esp32/status') {
+        const statusElement = document.querySelector('[data-sensor="statusesp32"]');
+        if (valor === 'online') {
+            statusElement.textContent = ' ONLINE';
+            statusElement.className = 'highlight';
+        } else {
+            statusElement.textContent = ' OFFLINE';
+            statusElement.className = 'warning';
+        }
+    }
+
 // Atualizar sensores
 const dataSensor = topicoParaDataSensor[topic];
 if (dataSensor) {
