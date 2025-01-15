@@ -360,15 +360,15 @@
     const valor = message.toString();
     
     // Tópicos de STATUS
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_carregando/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state') {
         document.getElementById('chargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="charging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state') {
         document.getElementById('dischargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="discharging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state') {
         document.getElementById('balancingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="balancing"]').textContent = valor;
     }
