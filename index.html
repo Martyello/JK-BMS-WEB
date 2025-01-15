@@ -307,9 +307,9 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
 
         // Status dos switches
-        'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_balanceando/state': 'balancing_switch_status',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_descarregamento/state',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state',
         // Status do Esp32
         'jk-bms-esp32/status': 'statusesp32',
     };
@@ -360,15 +360,15 @@
     const valor = message.toString();
     
     // Tópicos de STATUS
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_carregando/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state') {
         document.getElementById('chargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="charging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_descarregamento/state') {
         document.getElementById('dischargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="discharging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state') {
         document.getElementById('balancingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="balancing"]').textContent = valor;
     }
