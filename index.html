@@ -252,14 +252,7 @@ input:checked + .slider:before {
         
 
         <div class="cells">
-            <div class="cell"><img src="carregando.png">01.    <span data-sensor="cell_voltage_1">0.000 V</span></div>
-            <div class="cell"><img src="carregando.png">02.    <span data-sensor="cell_voltage_2">0.000 V</span> </div>
-            <div class="cell"><img src="carregando.png">03.    <span data-sensor="cell_voltage_3">0.000 V</span> </div>
-            <div class="cell"><img src="carregando.png">04.    <span data-sensor="cell_voltage_4">0.000 V</span> </div>
-            <div class="cell"><img src="carregando.png">05.    <span data-sensor="cell_voltage_5">0.000 V</span> </div>
-            <div class="cell"><img src="carregando.png">06.    <span data-sensor="cell_voltage_6">0.000 V</span> </div>
-            <div class="cell"><img src="carregando.png">07.    <span data-sensor="cell_voltage_7">0.000 V</span> </div>
-            <div class="cell"><img src="carregando.png">08.    <span data-sensor="cell_voltage_8">0.000 V</span> </div>
+            
         </div>
 
         <div class="controls">
@@ -287,6 +280,28 @@ input:checked + .slider:before {
         </div>
     </div>    
     <script>
+        function organizeCells(totalCells) {
+    const cellsContainer = document.querySelector('.cells');
+    cellsContainer.innerHTML = '';
+    
+    for (let i = 1; i <= totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.innerHTML = `<img src="carregando.png">${String(i).padStart(2, '0')}. <span data-sensor="cell_voltage_${i}">0.000 V</span>`;
+        
+        // Organiza as células: primeira metade à esquerda, segunda metade à direita
+        if (i <= totalCells/2) {
+            cell.style.gridRow = i;
+            cell.style.gridColumn = "1";
+        } else {
+            cell.style.gridRow = i - Math.floor(totalCells/2);
+            cell.style.gridColumn = "2";
+        }
+        
+        cellsContainer.appendChild(cell);
+    }
+}
+
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
         'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging',
@@ -353,6 +368,8 @@ input:checked + .slider:before {
             }
         }
     }
+    let cellVoltages = new Array(8).fill(0);
+organizeCells(8); // Cria 8 células organizadas
 
     const mqttConfig = {
         host: '3c923e74c20d465eb92533d999b9b67b.s1.eu.hivemq.cloud',
@@ -375,6 +392,14 @@ input:checked + .slider:before {
         client.subscribe('#', { qos: 1 });
         document.querySelector('.title h1').style.color = '#00ff00';
     });
+
+    client.on('connect', () => {
+    console.log('Conectado ao broker MQTT');
+    client.subscribe('#', { qos: 1 });
+    document.querySelector('.title h1').style.color = '#00ff00';
+    organizeCells(8); // Cria as células após conectar
+});
+
 
     client.on('message', (topic, message) => {
     const valor = message.toString();
