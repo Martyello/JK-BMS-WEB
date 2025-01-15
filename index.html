@@ -269,8 +269,8 @@
     <script>
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_tempo_de_execu____o_total_formatado/state': 'total_runtime_formatted',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state': 'charging',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_descarregamento/state': 'discharging',
+        'jk-bms-esp32/switch/jk-bms-esp32_carregando/state': 'charging',
+        'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state': 'discharging',
         'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state': 'balancing',
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_total/state': 'total_voltage',
         'jk-bms-esp32/sensor/jk-bms-esp32_consumo/state': 'power',
@@ -307,8 +307,8 @@
         'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
 
         // Status dos switches
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state': 'charging_switch_status',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_descarregamento/state': 'discharging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command': 'charging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command': 'discharging_switch_status',
         'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state': 'balancing_switch_status',
         // Status do Esp32
         'jk-bms-esp32/status': 'statusesp32',
@@ -360,11 +360,11 @@
     const valor = message.toString();
     
     // Tópicos de STATUS
-    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_carregamento/state') {
+    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_carregando/state') {
         document.getElementById('chargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="charging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state') {
+    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state') {
         document.getElementById('dischargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="discharging"]').textContent = valor;
     }
