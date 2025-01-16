@@ -43,10 +43,6 @@
             margin-bottom: 5px;
         }
 
-        .header p {
-        margin-bottom: 10px;
-        }
-
         .status {
             display: flex;
             justify-content: space-evenly;
@@ -218,9 +214,10 @@ input:checked + .slider:before {
         </div>
 
         <div class="header">
-            <p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span>   
-                  </p><p>Status BMS: <span data-sensor="statusesp32"></span></p>
+            <span class="space-right">Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span></span>
+                  <span>Status BMS: <span data-sensor="statusesp32"></span></span>
         </div>
+
 
         <div class="status">
             <div>Charge: <span data-sensor="charging" class="highlight">OFF</span></div>
