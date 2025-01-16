@@ -236,7 +236,7 @@ input:checked + .slider:before {
                     <p>Total Capacity: <span data-sensor="total_battery_capacity_setting" class="highlight">0 Ah</span></p>
                     <p>Cycle Capacity: <span data-sensor="total_charging_cycle_capacity" class="highlight">0 Ah</span></p>
                     <p>Avg Cell V: <span data-sensor="average_cell_voltage" class="highlight">0.000 V</span></p>
-                    <p>Balance Curr: <span data-sensor="current" class="highlight">0.00 A</span></p>
+                    <p>Balance Curr: <span data-sensor="current_calibration" class="highlight">0.00 A</span></p>
                     <p>Battery T1: <span data-sensor="temperature_sensor_1" class="highlight">0.0 °C</span></p>
                 </center>
             </div>
@@ -319,15 +319,16 @@ input:checked + .slider:before {
         'jk-bms-esp32/sensor/jk-bms-esp32_power/state': 'power',
         'jk-bms-esp32/sensor/jk-bms-esp32_total_battery_capacity_setting/state': 'total_battery_capacity_setting',
         'jk-bms-esp32/sensor/jk-bms-esp32_total_charging_cycle_capacity/state': 'total_charging_cycle_capacity',
-        'jk-bms-esp32/sensor/jk-bms-esp32_delta_cell_voltage/state': 'average_cell_voltage',
+        'jk-bms-esp32/sensor/jk-bms-esp32_charging_cycles/state': 'average_cell_voltage',
         'jk-bms-esp32/sensor/jk-bms-esp32_current/state': 'current',
-        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_1/state': 'temperature_sensor_1',
-        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante/state': 'capacity_remaining',
-        'jk-bms-esp32/sensor/jk-bms-esp32_capacidade_restante_derivada/state': 'capacity_remaining_derived',
-        'jk-bms-esp32/sensor/jk-bms-esp32_ciclos_de_carregamento/state': 'charging_cycles',
-        'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_delta/state': 'delta_cell_voltage',
-        'jk-bms-esp32/sensor/jk-bms-esp32_temperatura_do_tubo_de_pot__ncia/state': 'power_tube_temperature',
-        'jk-bms-esp32/sensor/jk-bms-esp32_sensor_de_temperatura_2/state': 'temperature_sensor_2',
+        'jk-bms-esp32/sensor/jk-bms-esp32_current_calibration/state': 'current_calibration',
+        'jk-bms-esp32/sensor/jk-bms-esp32_temperature_sensor_1/state': 'temperature_sensor_1',
+        'jk-bms-esp32/sensor/jk-bms-esp32_capacity_remaining/state': 'capacity_remaining',
+        'jk-bms-esp32/sensor/jk-bms-esp32_capacity_remaining_derived/state': 'capacity_remaining_derived',
+        'jk-bms-esp32/sensor/jk-bms-esp32_charging_cycles/state': 'charging_cycles',
+        'jk-bms-esp32/sensor/jk-bms-esp32_delta_cell_voltage/state': 'delta_cell_voltage',
+        'jk-bms-esp32/sensor/jk-bms-esp32_power_tube_temperature/state': 'power_tube_temperature',
+        'jk-bms-esp32/sensor/jk-bms-esp32_temperature_sensor_2/state': 'temperature_sensor_2',
         
         // Tensões das células
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_1/state': 'cell_voltage_1',
@@ -340,19 +341,19 @@ input:checked + .slider:before {
         'jk-bms-esp32/sensor/jk-bms-esp32_tens__o_da_c__lula_8/state': 'cell_voltage_8',
 
         // Resistências das células
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_1/state': 'cell_resistance_1',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_2/state': 'cell_resistance_2',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_3/state': 'cell_resistance_3',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_4/state': 'cell_resistance_4',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_5/state': 'cell_resistance_5',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_6/state': 'cell_resistance_6',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_7/state': 'cell_resistance_7',
-        'jk-bms-esp32/sensor/jk-bms-esp32_resist_ncia_da_c_lula_8/state': 'cell_resistance_8',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_1/state': 'cell_resistance_1',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_2/state': 'cell_resistance_2',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_3/state': 'cell_resistance_3',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_4/state': 'cell_resistance_4',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_5/state': 'cell_resistance_5',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_6/state': 'cell_resistance_6',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_7/state': 'cell_resistance_7',
+        'jk-bms-esp32/sensor/jk-bms-esp32_cell_voltage_8/state': 'cell_resistance_8',
 
-        // Status dos switches
-        'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command': 'charging_switch_status',
-        'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command': 'discharging_switch_status',
-        'jk-bms-esp32/binary_sensor/jk-bms-esp32_interruptor_de_balanceamento/state': 'balancing_switch_status',
+        // Status Swith
+        'jk-bms-esp32/switch/jk-bms-esp32_charging/state': 'charging_switch_status',
+        'jk-bms-esp32/switch/jk-bms-esp32_discharging/state': 'discharging_switch_status',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing_switch/state': 'balancing_switch_status',
         // Status do Esp32
         'jk-bms-esp32/status': 'statusesp32',
     };
@@ -406,15 +407,15 @@ input:checked + .slider:before {
     const valor = message.toString();
     
     // Tópicos de STATUS
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_carregando/state') {
+    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_charging/state') {
         document.getElementById('chargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="charging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_descarregando/state') {
+    if (topic === 'jk-bms-esp32/switch/jk-bms-esp32_discharging/state') {
         document.getElementById('dischargingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="discharging"]').textContent = valor;
     }
-    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_balanceamento/state') {
+    if (topic === 'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing_switch/state') {
         document.getElementById('balancingSwitch').checked = valor === 'ON';
         document.querySelector('[data-sensor="balancing"]').textContent = valor;
     }
@@ -477,11 +478,11 @@ if (dataSensor) {
 
     });
 
-    // Configuração atualizada dos switches
+    // Comandos dos switches so funciona com esp conectado via bluetooth
     const switches = {
-    'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_carregamento/command',
-    'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_descarregamento/command',
-    'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balanceando/command'
+    'chargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_charging/command',
+    'dischargingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_discharging/command',
+    'balancingSwitch': 'jk-bms-esp32/switch/jk-bms-esp32_balancing/command'
 };
 
 
