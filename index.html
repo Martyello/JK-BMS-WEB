@@ -219,7 +219,7 @@ input:checked + .slider:before {
 
         <div class="header">
             <p>Time: <span data-sensor="total_runtime_formatted" class="highlight">0D 0H</span>   
-                  Status BMS:<span data-sensor="statusesp32"></span></p>
+                  Status BMS: <span data-sensor="statusesp32"></span></p>
         </div>
 
         <div class="status">
@@ -313,7 +313,7 @@ input:checked + .slider:before {
     const topicoParaDataSensor = {
         'jk-bms-esp32/sensor/jk-bms-esp32_total_runtime_formatted/state': 'total_runtime_formatted',
         'jk-bms-esp32/switch/jk-bms-esp32_charging/state': 'charging',
-        'jk-bms-esp32/switch/jk-bms-esp32_discharging/state': 'discharging',
+        'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing/state': 'discharging',
         'jk-bms-esp32/binary_sensor/jk-bms-esp32_balancing/state': 'balancing',
         'jk-bms-esp32/sensor/jk-bms-esp32_total_voltage/state': 'total_voltage',
         'jk-bms-esp32/sensor/jk-bms-esp32_power/state': 'power',
